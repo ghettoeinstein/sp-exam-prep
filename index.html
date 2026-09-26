@@ -54,9 +54,61 @@
       min-height: 2.25rem;
       padding: 0.35rem 2rem 0.35rem 0.75rem;
     }
+    :root {
+      --bg-space: #07090e;
+      --bg-card: rgba(14, 18, 27, 0.82);
+      --bg-card-hover: rgba(22, 28, 42, 0.95);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(255, 255, 255, 0.18);
+      --accent-gold: #f59e0b;
+      --accent-gold-glow: rgba(245, 158, 11, 0.15);
+      --emerald-pass: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      --rose-fail: #f43f5e;
+      --cyan-focus: #06b6d4;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-tertiary: #64748b;
+    }
     .accessibility-button {
       min-height: 2.25rem;
       min-width: 2.25rem;
+    }
+    #ambient-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at top left, rgba(245,158,11,.10), transparent 34%), radial-gradient(circle at 80% 20%, rgba(6,182,212,.09), transparent 28%), var(--bg-space);
+    }
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 4px 20px -2px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .tabular { font-variant-numeric: tabular-nums; }
+    .quiz-mobile-shell { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+    .quiz-domain-row { overflow-wrap: anywhere; word-break: normal; }
+    .question-title {
+      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+      line-height: 1.45;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+    }
+    .option-card {
+      background: rgba(2, 6, 23, .68);
+      border: 1px solid var(--border-subtle);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+      transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
+    }
+    .option-card:hover { background: var(--bg-card-hover); border-color: var(--border-active); }
+    .option-card:active { transform: scale(.995); }
+    @supports (height: 100dvh) {
+      body { min-height: 100dvh; }
     }
     .custom-scroll::-webkit-scrollbar {
       width: 6px;
@@ -91,8 +143,9 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black antialiased custom-scroll">
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
 
-  <header class="sticky top-0 z-40 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
+  <header class="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-xl border-b border-white/10">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3 cursor-pointer" onclick="app.navTo('dashboard')">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center font-black text-gray-950 text-lg shadow-lg shadow-amber-500/20">
@@ -158,7 +211,7 @@
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 py-6 w-full flex-1">
+  <main class="relative z-10 max-w-6xl mx-auto px-4 py-6 w-full flex-1">
 
     <!-- VIEW 1: ONBOARDING INTAKE SURVEY -->
     <div id="view-onboarding" class="hidden max-w-xl mx-auto space-y-6 pt-4">
@@ -263,40 +316,43 @@
     </div>
 
     <!-- VIEW 2: QUIZ / DIAGNOSTIC INTERFACE -->
-    <div id="view-quiz" class="hidden max-w-3xl mx-auto space-y-4">
-      <!-- Quiz Progress Bar & Header -->
-      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex flex-col gap-3">
-        <div class="flex items-center justify-between text-xs">
-          <div class="flex items-center gap-2">
-            <span id="quiz-badge" class="px-2 py-0.5 rounded font-mono font-semibold bg-blue-950 text-blue-400 border border-blue-800 text-[11px]">
-              Diagnostic Mini-Exam
-            </span>
-            <span id="quiz-category-tag" class="text-gray-400 font-medium truncate max-w-[200px] sm:max-w-xs">
-              Category Name
-            </span>
-          </div>
-          <div class="flex items-center gap-3 font-mono">
-            <span id="quiz-question-counter" class="text-gray-300 font-bold">1 / 15</span>
-            <span id="quiz-timer" class="px-2 py-0.5 bg-gray-950 border border-gray-800 text-amber-400 rounded">
+    <div id="view-quiz" class="hidden max-w-3xl mx-auto space-y-4 quiz-mobile-shell">
+      <!-- Quiz HUD: timer/counter never share a row with category text -->
+      <div class="glass-card rounded-2xl p-4 flex flex-col gap-3">
+        <div class="flex items-center justify-between gap-3 text-xs">
+          <span id="quiz-badge" class="px-2.5 py-1 rounded-full font-bold bg-cyan-950/60 text-cyan-300 border border-cyan-500/20 text-[11px] whitespace-nowrap">
+            Diagnostic Mini-Exam
+          </span>
+          <div class="flex items-center gap-2 tabular">
+            <span id="quiz-question-counter" class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-gray-200 font-bold whitespace-nowrap">1 / 15</span>
+            <span id="quiz-timer" class="px-2.5 py-1 bg-gray-950/90 border border-amber-500/20 text-amber-300 rounded-full font-bold min-w-[4.2rem] text-center whitespace-nowrap">
               01:12
             </span>
           </div>
         </div>
 
-        <div class="w-full bg-gray-950 h-2 rounded-full overflow-hidden border border-gray-800">
-          <div id="quiz-progress-fill" class="bg-gradient-to-r from-amber-500 to-amber-400 h-full w-0 transition-all duration-300"></div>
+        <div class="quiz-domain-row text-sm sm:text-base text-gray-300 leading-snug">
+          <span id="quiz-category-tag" class="font-semibold text-white">Category Name</span>
+          <span class="text-gray-600 mx-1">•</span>
+          <span id="quiz-law-ref" class="text-amber-300 tabular">CA Civil Code §1102</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="w-full bg-gray-950/80 h-2 rounded-full overflow-hidden border border-white/10">
+            <div id="quiz-progress-fill" class="bg-gradient-to-r from-cyan-400 via-amber-400 to-emerald-400 h-full w-0 transition-all duration-300"></div>
+          </div>
+          <span id="quiz-progress-percent" class="text-[11px] tabular text-gray-400 font-bold min-w-[3rem] text-right">0%</span>
         </div>
       </div>
 
       <!-- Question Card -->
-      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-xl">
-        <div id="quiz-leitner-indicator" class="text-[11px] font-mono text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
-          <span>Memory Box 1</span>
-          <span>•</span>
-          <span id="quiz-law-ref" class="text-amber-500">CA Civil Code §1102</span>
+      <div class="glass-card rounded-3xl p-5 sm:p-8">
+        <div id="quiz-leitner-indicator" class="text-[11px] text-gray-400 uppercase tracking-wider mb-4 flex flex-wrap items-center gap-2">
+          <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">Memory Box 1</span>
+          <span class="px-2 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">High-yield recall</span>
         </div>
 
-        <h2 id="quiz-question-text" class="text-base sm:text-lg font-semibold text-white leading-relaxed mb-6">
+        <h2 id="quiz-question-text" class="question-title text-white mb-6">
           Under California law, in which of the following real estate transactions is the seller strictly exempt from delivering the statutory Transfer Disclosure Statement (TDS)?
         </h2>
 
@@ -1143,6 +1199,7 @@
 
       init() {
         this.applyAccessibilitySettings();
+        this.startAmbientCanvas();
         this.updateHeaderMetrics();
         this.startHeaderCountdown();
 
@@ -1182,6 +1239,77 @@
         this.state.settings = { ...(this.state.settings || {}), textScale };
         this.saveState();
         this.applyAccessibilitySettings();
+      }
+
+      startAmbientCanvas() {
+        const canvas = document.getElementById("ambient-canvas");
+        if (!canvas || canvas.dataset.started) return;
+        canvas.dataset.started = "true";
+        const ctx = canvas.getContext("2d", { alpha: true });
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        let w = 0, h = 0, nodes = [], pulses = [];
+
+        const resize = () => {
+          w = canvas.clientWidth;
+          h = canvas.clientHeight;
+          canvas.width = Math.floor(w * dpr);
+          canvas.height = Math.floor(h * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          const count = Math.max(28, Math.min(70, Math.floor((w * h) / 18000)));
+          nodes = Array.from({ length: count }, (_, i) => ({
+            x: (i * 97) % Math.max(w, 1),
+            y: (i * 193) % Math.max(h, 1),
+            vx: (Math.sin(i * 12.989) * 0.18),
+            vy: (Math.cos(i * 78.233) * 0.18),
+            r: 1 + ((i * 7) % 13) / 10
+          }));
+        };
+
+        const draw = () => {
+          ctx.clearRect(0, 0, w, h);
+          ctx.fillStyle = "rgba(7,9,14,.82)";
+          ctx.fillRect(0, 0, w, h);
+          nodes.forEach(n => {
+            n.x += n.vx; n.y += n.vy;
+            if (n.x < 0 || n.x > w) n.vx *= -1;
+            if (n.y < 0 || n.y > h) n.vy *= -1;
+          });
+          for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+              const a = nodes[i], b = nodes[j], dx = a.x - b.x, dy = a.y - b.y;
+              const dist = Math.hypot(dx, dy);
+              if (dist < 135) {
+                ctx.strokeStyle = `rgba(148,163,184,${0.08 * (1 - dist / 135)})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+              }
+            }
+          }
+          nodes.forEach(n => {
+            ctx.fillStyle = "rgba(248,250,252,.20)";
+            ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+          });
+          pulses = pulses.filter(p => p.life > 0);
+          pulses.forEach(p => {
+            p.life -= 0.018;
+            p.radius += 3.2;
+            const alpha = Math.max(0, p.life) * 0.22;
+            ctx.strokeStyle = p.color === "emerald" ? `rgba(16,185,129,${alpha})` : `rgba(244,63,94,${alpha})`;
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.stroke();
+          });
+          requestAnimationFrame(draw);
+        };
+
+        window.addEventListener("resize", resize, { passive: true });
+        window.addEventListener("pointerdown", e => pulses.push({ x: e.clientX, y: e.clientY, radius: 4, life: .8, color: "emerald" }), { passive: true });
+        this._ambientPulses = pulses;
+        resize(); draw();
+      }
+
+      emitAmbientPulse(color) {
+        if (!this._ambientPulses) return;
+        this._ambientPulses.push({ x: window.innerWidth / 2, y: window.innerHeight / 2, radius: 8, life: 1, color });
       }
 
       updateHeaderMetrics() {
@@ -1305,6 +1433,8 @@
         // Progress bar
         const pct = ((this.quizIndex) / total) * 100;
         document.getElementById("quiz-progress-fill").style.width = `${pct}%`;
+        const pctEl = document.getElementById("quiz-progress-percent");
+        if (pctEl) pctEl.textContent = `${Math.round(pct)}%`;
 
         // Leitner box indicator for this specific question
         const boxLabel = this.getQuestionBoxLabel(q.id);
@@ -1317,12 +1447,12 @@
         q.options.forEach((optText, idx) => {
           const letter = ["A", "B", "C", "D"][idx];
           const btn = document.createElement("button");
-          btn.className = "w-full text-left p-3.5 sm:p-4 rounded-xl bg-gray-950 border border-gray-800 hover:border-gray-700 text-xs sm:text-sm text-gray-200 font-medium transition flex items-start gap-3 group";
+          btn.className = "option-card w-full text-left p-4 sm:p-5 rounded-2xl text-sm sm:text-base text-gray-100 font-medium flex items-start gap-3 group";
           btn.innerHTML = `
-            <span class="w-6 h-6 rounded-lg bg-gray-900 border border-gray-700 group-hover:border-amber-400 group-hover:text-amber-400 flex items-center justify-center font-mono font-bold text-xs text-gray-400 shrink-0">
+            <span class="w-7 h-7 rounded-xl bg-white/5 border border-white/10 group-hover:border-amber-400/60 group-hover:text-amber-300 flex items-center justify-center font-bold text-xs text-gray-300 shrink-0 tabular">
               ${letter}
             </span>
-            <span class="pt-0.5 leading-relaxed">${optText}</span>
+            <span class="pt-0.5 leading-relaxed min-w-0">${optText}</span>
           `;
           btn.onclick = () => this.handleOptionSelection(idx);
           container.appendChild(btn);
@@ -1345,9 +1475,9 @@
           const s = this.secondsRemaining % 60;
           timerEl.textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
           if (this.secondsRemaining <= 10) {
-            timerEl.className = "px-2 py-0.5 bg-rose-950 border border-rose-800 text-rose-400 rounded font-mono";
+            timerEl.className = "px-2.5 py-1 bg-rose-950/90 border border-rose-500/40 text-rose-300 rounded-full font-bold min-w-[4.2rem] text-center whitespace-nowrap tabular";
           } else {
-            timerEl.className = "px-2 py-0.5 bg-gray-950 border border-gray-800 text-amber-400 rounded font-mono";
+            timerEl.className = "px-2.5 py-1 bg-gray-950/90 border border-amber-500/20 text-amber-300 rounded-full font-bold min-w-[4.2rem] text-center whitespace-nowrap tabular";
           }
         };
 
@@ -1403,11 +1533,11 @@
           buttons[i].disabled = true;
           buttons[i].classList.remove("hover:border-gray-700");
           if (i === q.correctIndex) {
-            buttons[i].className = "w-full text-left p-3.5 sm:p-4 rounded-xl bg-emerald-950/70 border border-emerald-500 text-emerald-100 font-medium flex items-start gap-3";
+            buttons[i].className = "w-full text-left p-4 sm:p-5 rounded-2xl bg-emerald-950/70 border border-emerald-400 text-emerald-50 font-medium flex items-start gap-3 shadow-lg shadow-emerald-500/10";
           } else if (i === selectedIndex && !isCorrect) {
-            buttons[i].className = "w-full text-left p-3.5 sm:p-4 rounded-xl bg-rose-950/70 border border-rose-500 text-rose-100 font-medium flex items-start gap-3";
+            buttons[i].className = "w-full text-left p-4 sm:p-5 rounded-2xl bg-rose-950/70 border border-rose-400 text-rose-50 font-medium flex items-start gap-3 shadow-lg shadow-rose-500/10";
           } else {
-            buttons[i].className = "w-full text-left p-3.5 sm:p-4 rounded-xl bg-gray-950/40 border border-gray-900 text-gray-500 font-medium flex items-start gap-3 opacity-60";
+            buttons[i].className = "w-full text-left p-4 sm:p-5 rounded-2xl bg-gray-950/30 border border-white/5 text-gray-500 font-medium flex items-start gap-3 opacity-60";
           }
         }
 
@@ -1417,6 +1547,8 @@
         const body = document.getElementById("explanation-body");
         const cit = document.getElementById("explanation-citation");
         const icon = document.getElementById("explanation-icon");
+
+        this.emitAmbientPulse(isCorrect ? "emerald" : "rose");
 
         if (isCorrect) {
           headline.textContent = "Correct! High-Yield Rule Verified";
