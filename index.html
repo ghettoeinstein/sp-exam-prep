@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Inter:wght@400;500;600;700;800;900&family=Lexend:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -31,11 +31,32 @@
     }
   </script>
   <style>
+    html { font-size: var(--cram-base-size, 16px); }
     body {
       background-color: #090D16;
       color: #F3F4F6;
       font-family: Inter, "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
       -webkit-tap-highlight-color: transparent;
+    }
+    body[data-font="neue"] { font-family: Inter, "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif; }
+    body[data-font="atkinson"] { font-family: "Atkinson Hyperlegible", Inter, system-ui, sans-serif; }
+    body[data-font="source"] { font-family: "Source Sans 3", Inter, system-ui, sans-serif; }
+    body[data-font="lexend"] { font-family: Lexend, Inter, system-ui, sans-serif; }
+    body[data-font="system"] { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    body, button, input, select, textarea { font-family: inherit; }
+    .accessibility-select {
+      background: #020617;
+      border: 1px solid #374151;
+      border-radius: 0.75rem;
+      color: #F9FAFB;
+      font-size: 0.75rem;
+      font-weight: 700;
+      min-height: 2.25rem;
+      padding: 0.35rem 2rem 0.35rem 0.75rem;
+    }
+    .accessibility-button {
+      min-height: 2.25rem;
+      min-width: 2.25rem;
     }
     .custom-scroll::-webkit-scrollbar {
       width: 6px;
@@ -92,8 +113,24 @@
         </div>
       </div>
 
-      <!-- Quick Stats & Memory Bank Indicators -->
-      <div class="flex items-center gap-2 sm:gap-4">
+      <!-- Quick Stats, Accessibility & Memory Bank Indicators -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
+        <div class="flex items-center gap-2 bg-gray-950/95 px-2 py-1.5 rounded-xl border border-gray-700 shadow-lg" aria-label="Reading accessibility controls">
+          <label for="font-select" class="hidden md:inline text-[10px] uppercase tracking-wider text-amber-300 font-bold">Font</label>
+          <select id="font-select" onchange="app.setFont(this.value)" class="accessibility-select" title="Choose an easy-to-read font">
+            <option value="neue">Neue Clean</option>
+            <option value="atkinson">Most Readable</option>
+            <option value="source">Book Sans</option>
+            <option value="lexend">Low Strain</option>
+            <option value="system">System</option>
+          </select>
+          <div class="flex items-center gap-1" aria-label="Text size controls">
+            <button type="button" onclick="app.setTextScale('sm')" id="text-size-sm" class="accessibility-button px-2 rounded-lg text-xs font-black bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700" title="Standard text size">A</button>
+            <button type="button" onclick="app.setTextScale('lg')" id="text-size-lg" class="accessibility-button px-2 rounded-lg text-sm font-black bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700" title="Large text size">A+</button>
+            <button type="button" onclick="app.setTextScale('xl')" id="text-size-xl" class="accessibility-button px-2 rounded-lg text-base font-black bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700" title="Extra large text size">A++</button>
+          </div>
+        </div>
+
         <div class="hidden sm:flex items-center gap-2 font-mono text-xs bg-gray-950 px-3 py-1.5 rounded-lg border border-gray-800">
           <span title="Box 1: Needs immediate review" class="flex items-center gap-1 text-rose-400">
             <span class="w-2 h-2 rounded-full bg-rose-500"></span>
@@ -1071,14 +1108,24 @@
             }
           },
           startTime: Date.now(),
-          targetHours: 72
+          targetHours: 72,
+          settings: {
+            font: "neue",
+            textScale: "lg"
+          }
         };
 
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
           if (!raw) return defaultState;
           const parsed = JSON.parse(raw);
-          return { ...defaultState, ...parsed };
+          return {
+            ...defaultState,
+            ...parsed,
+            settings: { ...defaultState.settings, ...(parsed.settings || {}) },
+            memoryBank: { ...defaultState.memoryBank, ...(parsed.memoryBank || {}) },
+            history: { ...defaultState.history, ...(parsed.history || {}) }
+          };
         } catch (e) {
           console.error("Failed loading local storage", e);
           return defaultState;
@@ -1095,6 +1142,7 @@
       }
 
       init() {
+        this.applyAccessibilitySettings();
         this.updateHeaderMetrics();
         this.startHeaderCountdown();
 
@@ -1104,6 +1152,36 @@
         } else {
           this.navTo("dashboard");
         }
+      }
+
+      applyAccessibilitySettings() {
+        const settings = this.state.settings || { font: "neue", textScale: "lg" };
+        const scaleMap = { sm: "16px", lg: "18px", xl: "20px" };
+
+        document.body.dataset.font = settings.font || "neue";
+        document.documentElement.style.setProperty("--cram-base-size", scaleMap[settings.textScale] || scaleMap.lg);
+
+        const fontSelect = document.getElementById("font-select");
+        if (fontSelect) fontSelect.value = settings.font || "neue";
+
+        ["sm", "lg", "xl"].forEach(size => {
+          const btn = document.getElementById(`text-size-${size}`);
+          if (!btn) return;
+          const active = (settings.textScale || "lg") === size;
+          btn.className = `accessibility-button px-2 rounded-lg font-black border transition ${size === "sm" ? "text-xs" : size === "lg" ? "text-sm" : "text-base"} ${active ? "bg-amber-500 text-gray-950 border-amber-400" : "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700"}`;
+        });
+      }
+
+      setFont(font) {
+        this.state.settings = { ...(this.state.settings || {}), font };
+        this.saveState();
+        this.applyAccessibilitySettings();
+      }
+
+      setTextScale(textScale) {
+        this.state.settings = { ...(this.state.settings || {}), textScale };
+        this.saveState();
+        this.applyAccessibilitySettings();
       }
 
       updateHeaderMetrics() {
