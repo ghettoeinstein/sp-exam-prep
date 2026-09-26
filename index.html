@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CA Real Estate 72-Hour Emergency Cram Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              gold: '#F59E0B',
+              navy: '#0B132B',
+              surface: '#111827',
+              panel: '#1E293B',
+              accent: '#3B82F6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #090D16;
+      color: #F3F4F6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #111827;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #374151;
+      border-radius: 9999px;
+    }
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black antialiased custom-scroll">
+
+  <header class="sticky top-0 z-40 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="app.navTo('dashboard')">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center font-black text-gray-950 text-lg shadow-lg shadow-amber-500/20">
+          CA
+        </div>
+        <div>
+          <div class="text-sm font-bold tracking-tight text-white flex items-center gap-2">
+            72H REAL ESTATE CRAM
+            <span id="header-tier-tag" class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-red-950/80 text-red-400 border border-red-800 hidden">
+              Tier 1
+            </span>
+          </div>
+          <div class="text-[11px] text-gray-400 flex items-center gap-2">
+            <span>DRE Salesperson Engine</span>
+            <span class="text-gray-600">•</span>
+            <span id="header-countdown" class="text-amber-400 font-mono">72h:00m left</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats & Memory Bank Indicators -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <div class="hidden sm:flex items-center gap-2 font-mono text-xs bg-gray-950 px-3 py-1.5 rounded-lg border border-gray-800">
+          <span title="Box 1: Needs immediate review" class="flex items-center gap-1 text-rose-400">
+            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+            <span id="stat-b1">0</span>
+          </span>
+          <span class="text-gray-700">|</span>
+          <span title="Box 2: Familiar" class="flex items-center gap-1 text-amber-400">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span id="stat-b2">0</span>
+          </span>
+          <span class="text-gray-700">|</span>
+          <span title="Box 3: Mastered" class="flex items-center gap-1 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span id="stat-b3">0</span>
+          </span>
+        </div>
+
+        <button onclick="app.navTo('dashboard')" id="nav-btn-home" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-200 transition">
+          Dashboard
+        </button>
+        <button onclick="app.showResetModal()" title="Reset or Export Data" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 w-full flex-1">
+
+    <!-- VIEW 1: ONBOARDING INTAKE SURVEY -->
+    <div id="view-onboarding" class="hidden max-w-xl mx-auto space-y-6 pt-4">
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex items-center gap-2 text-amber-400 font-mono text-xs uppercase tracking-wider mb-2">
+          <span>🚨 Emergency Protocol</span>
+          <span>•</span>
+          <span>DRE Salesperson Exam</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          72-Hour Rapid Intake Assessment
+        </h1>
+        <p class="text-sm text-gray-400 mt-2">
+          The California DRE exam has a strict <strong>70% passing threshold</strong> (105 / 150 correct). Let's triage your current memory bank and prescribe a deterministic cram plan.
+        </p>
+
+        <form id="onboarding-form" onsubmit="app.handleOnboardingSubmit(event)" class="mt-6 space-y-5">
+          <!-- Step 1: Hours Remaining -->
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+              1. Time Left Until Test Time:
+            </label>
+            <div class="grid grid-cols-3 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="hoursLeft" value="24" class="peer sr-only" required>
+                <div class="p-3 text-center rounded-xl bg-gray-950 border border-gray-800 peer-checked:border-rose-500 peer-checked:bg-rose-950/30 text-xs font-medium text-gray-300 peer-checked:text-rose-300 transition">
+                  <span class="block text-base font-bold mb-0.5">&lt; 24h</span>
+                  Panic Mode
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="hoursLeft" value="48" class="peer sr-only">
+                <div class="p-3 text-center rounded-xl bg-gray-950 border border-gray-800 peer-checked:border-amber-500 peer-checked:bg-amber-950/30 text-xs font-medium text-gray-300 peer-checked:text-amber-300 transition">
+                  <span class="block text-base font-bold mb-0.5">24 - 48h</span>
+                  Triage Weekend
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="hoursLeft" value="72" class="peer sr-only" checked>
+                <div class="p-3 text-center rounded-xl bg-gray-950 border border-gray-800 peer-checked:border-emerald-500 peer-checked:bg-emerald-950/30 text-xs font-medium text-gray-300 peer-checked:text-emerald-300 transition">
+                  <span class="block text-base font-bold mb-0.5">48 - 72h</span>
+                  Full 3-Day Plan
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Step 2: Honest Baseline -->
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+              2. Your Current State:
+            </label>
+            <div class="space-y-2">
+              <label class="flex items-center gap-3 p-3 rounded-xl bg-gray-950 border border-gray-800 cursor-pointer hover:border-gray-700 transition">
+                <input type="radio" name="currentLevel" value="beginner" class="text-amber-500 focus:ring-0" required>
+                <div class="text-xs">
+                  <div class="font-semibold text-white">Cold / High Anxiety</div>
+                  <div class="text-gray-400">Finished the certificate courses a while ago or clicked through quickly.</div>
+                </div>
+              </label>
+              <label class="flex items-center gap-3 p-3 rounded-xl bg-gray-950 border border-gray-800 cursor-pointer hover:border-gray-700 transition">
+                <input type="radio" name="currentLevel" value="intermediate" class="text-amber-500 focus:ring-0" checked>
+                <div class="text-xs">
+                  <div class="font-semibold text-white">Borderline / Hovering 60%</div>
+                  <div class="text-gray-400">Remember some concepts, but get tripped up on CA disclosures & law specifics.</div>
+                </div>
+              </label>
+              <label class="flex items-center gap-3 p-3 rounded-xl bg-gray-950 border border-gray-800 cursor-pointer hover:border-gray-700 transition">
+                <input type="radio" name="currentLevel" value="advanced" class="text-amber-500 focus:ring-0">
+                <div class="text-xs">
+                  <div class="font-semibold text-white">Refining & Polishing (Passing on practice)</div>
+                  <div class="text-gray-400">Need endurance practice and tricky legal rule consolidation.</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Step 3: Biggest Fear Domain -->
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+              3. Area you feel least confident in:
+            </label>
+            <select name="weakPoint" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+              <option value="Disclosures">Practice of Real Estate & Mandatory Disclosures (25% of exam)</option>
+              <option value="Agency">Legal Agency & Fiduciary Duties (17% of exam)</option>
+              <option value="Ownership">Property Ownership, Vesting & Land Use (15% of exam)</option>
+              <option value="Valuation">Valuation, Appraisals & Math (14% of exam)</option>
+              <option value="Contracts">Contracts & Purchase Agreements (12% of exam)</option>
+              <option value="Financing">Financing & Deeds of Trust (9% of exam)</option>
+              <option value="Transfer">Property Transfer, Deeds & Escrow (8% of exam)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-gray-950 font-bold rounded-xl text-sm shadow-lg shadow-amber-500/20 transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+            <span>Proceed to 15-Question Calibration Diagnostic</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- VIEW 2: QUIZ / DIAGNOSTIC INTERFACE -->
+    <div id="view-quiz" class="hidden max-w-3xl mx-auto space-y-4">
+      <!-- Quiz Progress Bar & Header -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex flex-col gap-3">
+        <div class="flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span id="quiz-badge" class="px-2 py-0.5 rounded font-mono font-semibold bg-blue-950 text-blue-400 border border-blue-800 text-[11px]">
+              Diagnostic Mini-Exam
+            </span>
+            <span id="quiz-category-tag" class="text-gray-400 font-medium truncate max-w-[200px] sm:max-w-xs">
+              Category Name
+            </span>
+          </div>
+          <div class="flex items-center gap-3 font-mono">
+            <span id="quiz-question-counter" class="text-gray-300 font-bold">1 / 15</span>
+            <span id="quiz-timer" class="px-2 py-0.5 bg-gray-950 border border-gray-800 text-amber-400 rounded">
+              01:12
+            </span>
+          </div>
+        </div>
+
+        <div class="w-full bg-gray-950 h-2 rounded-full overflow-hidden border border-gray-800">
+          <div id="quiz-progress-fill" class="bg-gradient-to-r from-amber-500 to-amber-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div id="quiz-leitner-indicator" class="text-[11px] font-mono text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+          <span>Memory Box 1</span>
+          <span>•</span>
+          <span id="quiz-law-ref" class="text-amber-500">CA Civil Code §1102</span>
+        </div>
+
+        <h2 id="quiz-question-text" class="text-base sm:text-lg font-semibold text-white leading-relaxed mb-6">
+          Under California law, in which of the following real estate transactions is the seller strictly exempt from delivering the statutory Transfer Disclosure Statement (TDS)?
+        </h2>
+
+        <!-- Options Container -->
+        <div id="quiz-options-container" class="space-y-3">
+          <!-- Dynamically inserted buttons -->
+        </div>
+
+        <!-- Explanation Drawer (Revealed after answer) -->
+        <div id="quiz-explanation-box" class="hidden mt-6 pt-5 border-t border-gray-800">
+          <div class="flex items-start gap-3">
+            <div id="explanation-icon" class="p-1.5 rounded-lg bg-emerald-950/70 text-emerald-400 border border-emerald-800 shrink-0 mt-0.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div class="space-y-2 text-xs">
+              <div id="explanation-headline" class="font-bold text-white text-sm">Correct!</div>
+              <div id="explanation-body" class="text-gray-300 leading-relaxed">
+                Transfers made pursuant to a court order (such as probate, foreclosure, or bankruptcy) are specifically exempt from the TDS requirement under California Civil Code 1102.
+              </div>
+              <div id="explanation-citation" class="text-amber-400/90 font-mono text-[11px]">
+                Statute: CA Civ. Code § 1102.2(a)
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 flex justify-end">
+            <button id="quiz-next-btn" onclick="app.nextQuestion()" class="py-2.5 px-6 rounded-xl bg-white hover:bg-gray-200 text-gray-950 font-bold text-xs shadow-md transition flex items-center gap-2">
+              <span>Next Question</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: DIAGNOSTIC REPORT & TIER RECOMMENDATION -->
+    <div id="view-diagnostic-result" class="hidden max-w-2xl mx-auto space-y-6">
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div class="text-center space-y-3 pb-6 border-b border-gray-800">
+          <span class="text-xs font-mono uppercase tracking-widest px-3 py-1 rounded-full bg-gray-800 text-gray-300">
+            Baseline Audit Completed
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+            Diagnostic Score: <span id="diag-score" class="text-amber-400">10/15</span>
+            <span id="diag-percent" class="text-lg font-mono text-gray-400 ml-1">(66.7%)</span>
+          </h2>
+          <p class="text-xs text-gray-400 max-w-md mx-auto">
+            Official DRE Passing Standard: <strong class="text-white">70.0%</strong>. Here is your deterministic 72-hour triage diagnosis.
+          </p>
+        </div>
+
+        <!-- Tier Card -->
+        <div id="diag-tier-card" class="my-6 p-5 rounded-xl border">
+          <!-- Filled dynamically -->
+        </div>
+
+        <!-- Category Breakdown -->
+        <div class="space-y-3">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-gray-300">
+            DRE Category Accuracy Breakdown
+          </h3>
+          <div id="diag-category-bars" class="space-y-2 text-xs">
+            <!-- Dynamically populated category rows -->
+          </div>
+        </div>
+
+        <!-- Prescribed Action Plan -->
+        <div class="mt-6 pt-5 border-t border-gray-800 flex flex-col sm:flex-row gap-3">
+          <button onclick="app.navTo('dashboard')" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-gray-950 font-bold text-xs text-center transition shadow-lg shadow-amber-500/10">
+            Open 72-Hour Cram Headquarters
+          </button>
+          <button onclick="app.startPrescribedSprint()" class="flex-1 py-3 px-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs text-center transition border border-gray-700">
+            Start First Triage Sprint (10Q)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 4: MAIN DASHBOARD & CRAM COMMAND CENTER -->
+    <div id="view-dashboard" class="hidden space-y-6">
+      
+      <!-- Top Alert / Prescription Banner -->
+      <div id="dash-prescription-banner" class="bg-gradient-to-r from-gray-900 via-gray-900 to-gray-800 border border-gray-800 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+        <div class="flex items-center gap-4">
+          <div id="dash-tier-icon" class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shrink-0">
+            ⚠️
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="dash-tier-title" class="text-sm font-extrabold text-white">Tier 2: Near the Margin (45-69%)</span>
+              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-gray-800 text-amber-300 border border-gray-700">Recommended Plan</span>
+            </div>
+            <p id="dash-tier-desc" class="text-xs text-gray-400 mt-0.5">
+              Focus 70% of study time on Disclosures & Agency (42% weight) to reliably cross the 70% mark.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 w-full md:w-auto">
+          <button onclick="app.startMode('sprint')" class="w-full md:w-auto py-2.5 px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-xs transition shadow-md whitespace-nowrap">
+            Launch Sprint Session
+          </button>
+        </div>
+      </div>
+
+      <!-- Core Stats Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <!-- Card 1: Estimated Readiness -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+          <div class="text-[11px] text-gray-400 font-medium">Predicted DRE Score</div>
+          <div class="mt-1 flex items-baseline gap-2">
+            <span id="dash-metric-score" class="text-2xl font-black text-white font-mono">0%</span>
+            <span class="text-[11px] text-gray-500">Need 70%</span>
+          </div>
+          <div class="mt-2 w-full bg-gray-950 h-1.5 rounded-full overflow-hidden">
+            <div id="dash-bar-score" class="bg-amber-400 h-full w-0"></div>
+          </div>
+        </div>
+
+        <!-- Card 2: Box 1 (Mistake Graveyard) -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 relative overflow-hidden">
+          <div class="text-[11px] text-rose-400 font-medium flex items-center justify-between">
+            <span>Box 1: Needs Work</span>
+            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+          </div>
+          <div class="mt-1 flex items-baseline gap-2">
+            <span id="dash-metric-b1" class="text-2xl font-black text-rose-300 font-mono">0</span>
+            <span class="text-[11px] text-gray-500">questions</span>
+          </div>
+          <p class="text-[10px] text-gray-400 mt-2">High-frequency rotation</p>
+        </div>
+
+        <!-- Card 3: Box 2 (Review) -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+          <div class="text-[11px] text-amber-400 font-medium flex items-center justify-between">
+            <span>Box 2: In Review</span>
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          </div>
+          <div class="mt-1 flex items-baseline gap-2">
+            <span id="dash-metric-b2" class="text-2xl font-black text-amber-300 font-mono">0</span>
+            <span class="text-[11px] text-gray-500">questions</span>
+          </div>
+          <p class="text-[10px] text-gray-400 mt-2">1 correct answer</p>
+        </div>
+
+        <!-- Card 4: Box 3 (Mastered) -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+          <div class="text-[11px] text-emerald-400 font-medium flex items-center justify-between">
+            <span>Box 3: Mastered</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </div>
+          <div class="mt-1 flex items-baseline gap-2">
+            <span id="dash-metric-b3" class="text-2xl font-black text-emerald-300 font-mono">0</span>
+            <span class="text-[11px] text-gray-500">questions</span>
+          </div>
+          <p class="text-[10px] text-gray-400 mt-2">2+ consecutive correct</p>
+        </div>
+      </div>
+
+      <!-- Study Modes Grid -->
+      <div class="space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">
+          Targeted 72-Hour Drill Modules
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <!-- Mode A: Mistake Graveyard -->
+          <div class="bg-gray-900 border border-gray-800 hover:border-rose-900/60 rounded-xl p-5 flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="p-2 rounded-lg bg-rose-950 text-rose-400 border border-rose-800">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </span>
+                <span id="dash-graveyard-count" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-gray-950 text-rose-400 border border-gray-800">
+                  0 Unresolved
+                </span>
+              </div>
+              <h4 class="text-sm font-bold text-white group-hover:text-rose-300 transition">
+                The Mistake Graveyard
+              </h4>
+              <p class="text-xs text-gray-400 mt-1 leading-relaxed">
+                Drill exclusively through Box 1 missed questions until every single item is answered correctly.
+              </p>
+            </div>
+            <button onclick="app.startMode('graveyard')" class="mt-4 w-full py-2 px-3 rounded-lg bg-gray-800 hover:bg-rose-950 hover:text-rose-200 text-gray-300 border border-gray-700 hover:border-rose-800 text-xs font-semibold transition">
+              Clear Box 1 Misses
+            </button>
+          </div>
+
+          <!-- Mode B: Quick Category Sprint -->
+          <div class="bg-gray-900 border border-gray-800 hover:border-amber-500/50 rounded-xl p-5 flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="p-2 rounded-lg bg-amber-950 text-amber-400 border border-amber-800">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                </span>
+                <span class="text-xs font-mono text-gray-400">10 Questions</span>
+              </div>
+              <h4 class="text-sm font-bold text-white group-hover:text-amber-300 transition">
+                Category Drill
+              </h4>
+              <p class="text-xs text-gray-400 mt-1 leading-relaxed">
+                Laser-target your weakest DRE subject (Disclosures, Agency, Appraisals, or Contracts).
+              </p>
+            </div>
+            <div class="mt-4 flex gap-2">
+              <select id="dash-category-select" class="flex-1 bg-gray-950 border border-gray-800 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none">
+                <option value="Disclosures">Disclosures (25%)</option>
+                <option value="Agency">Agency & Duties (17%)</option>
+                <option value="Ownership">Ownership & Vesting (15%)</option>
+                <option value="Valuation">Valuation & Math (14%)</option>
+                <option value="Contracts">Contracts (12%)</option>
+                <option value="Financing">Financing (9%)</option>
+                <option value="Transfer">Transfer & Deeds (8%)</option>
+              </select>
+              <button onclick="app.startCategoryDrill()" class="py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-gray-950 text-xs font-bold transition">
+                Go
+              </button>
+            </div>
+          </div>
+
+          <!-- Mode C: Fast Flashcards -->
+          <div class="bg-gray-900 border border-gray-800 hover:border-blue-500/50 rounded-xl p-5 flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="p-2 rounded-lg bg-blue-950 text-blue-400 border border-blue-800">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </span>
+                <span class="text-xs font-mono text-gray-400">Statutory Rules</span>
+              </div>
+              <h4 class="text-sm font-bold text-white group-hover:text-blue-300 transition">
+                Statutes & Flashcards
+              </h4>
+              <p class="text-xs text-gray-400 mt-1 leading-relaxed">
+                Flip through CA Civil Code, landmark cases (<em>Easton v. Strassburger</em>), and key acronyms.
+              </p>
+            </div>
+            <button onclick="app.navTo('flashcards')" class="mt-4 w-full py-2 px-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 text-xs font-semibold transition">
+              Open Card Deck
+            </button>
+          </div>
+
+          <!-- Mode D: Full 50Q / 150Q Mock Simulation -->
+          <div class="bg-gray-900 border border-gray-800 hover:border-emerald-500/50 rounded-xl p-5 flex flex-col justify-between transition group md:col-span-2 lg:col-span-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="p-1.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </span>
+                  <h4 class="text-sm font-bold text-white">Full Realistic DRE Simulation</h4>
+                  <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700">70% Bar</span>
+                </div>
+                <p class="text-xs text-gray-400">
+                  Strictly weighted to the 7 California state domains. Simulates actual exam endurance and testing psychology.
+                </p>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="app.startMockExam(30)" class="py-2 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 text-xs font-semibold transition whitespace-nowrap">
+                  30Q Sprint Mock (36 min)
+                </button>
+                <button onclick="app.startMockExam(150)" class="py-2 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-gray-950 text-xs font-bold transition shadow whitespace-nowrap">
+                  Full 150Q Official Run (3 hrs)
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 72-Hour Structured Roadmap Recommendation -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-300 mb-4 flex items-center justify-between">
+          <span>72-Hour Survival Timeline</span>
+          <span class="text-amber-400 font-mono text-[11px]">Recommended Schedule</span>
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 space-y-2">
+            <div class="font-bold text-amber-400 flex items-center justify-between">
+              <span>Day 1 (Hour 0 - 24)</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300">Foundation</span>
+            </div>
+            <p class="text-gray-400">
+              Drill <strong>Disclosures</strong> & <strong>Agency</strong> (42% of the test). Empty Box 1 twice and learn the TDS exemptions.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 space-y-2">
+            <div class="font-bold text-blue-400 flex items-center justify-between">
+              <span>Day 2 (Hour 24 - 48)</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-950 text-blue-300">Ownership & Math</span>
+            </div>
+            <p class="text-gray-400">
+              Vesting (Joint Tenancy vs. TIC), Deeds of Trust vs. Mortgages, and Cap Rate math. Run a 30Q Mock.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 space-y-2">
+            <div class="font-bold text-emerald-400 flex items-center justify-between">
+              <span>Day 3 (Hour 48 - 72)</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300">Lock-In</span>
+            </div>
+            <p class="text-gray-400">
+              Mistake Graveyard cleanup only. Review Flashcards deck. Sleep 8 full hours before the exam center.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VIEW 5: FLASHCARDS DECK -->
+    <div id="view-flashcards" class="hidden max-w-xl mx-auto space-y-6 pt-2">
+      <div class="flex items-center justify-between">
+        <button onclick="app.navTo('dashboard')" class="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Back to Dashboard
+        </button>
+        <span id="flashcard-counter" class="text-xs font-mono text-gray-400">Card 1 / 10</span>
+      </div>
+
+      <!-- 3D Flip Card Container -->
+      <div class="perspective-1000 w-full min-h-[340px] cursor-pointer" onclick="app.flipCard()">
+        <div id="flashcard-inner" class="relative w-full h-full min-h-[340px] duration-500 transform-style-3d transition-transform bg-gray-900 border border-gray-800 rounded-2xl p-8 flex flex-col justify-between shadow-2xl">
+          
+          <!-- Card Front -->
+          <div id="flashcard-front" class="space-y-4">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span id="card-tag" class="px-2.5 py-1 rounded-full bg-amber-950/80 text-amber-400 border border-amber-800 text-[10px] uppercase">
+                Landmark Case
+              </span>
+              <span class="text-gray-500">Tap to Flip ↻</span>
+            </div>
+            <div class="pt-6">
+              <h3 id="card-title" class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
+                Easton v. Strassburger (1984)
+              </h3>
+              <p class="text-xs text-gray-400 mt-2">What critical legal duty did this court ruling establish for California real estate licensees?</p>
+            </div>
+          </div>
+
+          <!-- Card Back (Hidden until flipped) -->
+          <div id="flashcard-back" class="hidden space-y-4">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-emerald-400 font-bold uppercase text-[10px]">Statutory Answer</span>
+              <span class="text-gray-500">Tap to Flip ↻</span>
+            </div>
+            <div class="pt-2">
+              <p id="card-back-text" class="text-sm sm:text-base text-gray-200 leading-relaxed font-medium">
+                Established that real estate agents have an affirmative duty to conduct a <strong>reasonably competent and diligent visual inspection</strong> of accessible areas of residential 1-to-4 unit property and disclose all material facts affecting value and desirability.
+              </p>
+              <div id="card-back-statute" class="mt-4 p-2.5 rounded-lg bg-gray-950 border border-gray-800 text-xs font-mono text-amber-400">
+                Codified in California Civil Code § 2079
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-gray-500 text-center font-mono pt-4 border-t border-gray-800/60">
+            Click anywhere on card to flip
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex items-center justify-between gap-4">
+        <button onclick="app.prevCard()" class="py-2.5 px-5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-xs font-semibold transition">
+          Previous Card
+        </button>
+        <button onclick="app.nextCard()" class="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-gray-950 text-xs font-bold transition shadow-md">
+          Next Card
+        </button>
+      </div>
+    </div>
+
+    <!-- VIEW 6: MOCK RESULTS BREAKDOWN -->
+    <div id="view-exam-result" class="hidden max-w-2xl mx-auto space-y-6">
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-center space-y-4">
+        <div id="exam-status-badge" class="inline-block px-3 py-1 rounded-full text-xs font-mono uppercase font-bold tracking-widest bg-emerald-950 text-emerald-400 border border-emerald-800">
+          OFFICIALLY PASSED
+        </div>
+
+        <h2 class="text-3xl font-black text-white">
+          Score: <span id="exam-result-score" class="text-amber-400">82%</span>
+        </h2>
+        <p id="exam-result-summary" class="text-xs text-gray-400 max-w-md mx-auto leading-relaxed">
+          You achieved 25 out of 30 correct answers. This comfortably clears the California DRE minimum required passing score of 70%.
+        </p>
+
+        <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 text-left space-y-2 mt-4">
+          <div class="text-xs font-bold text-gray-300 uppercase tracking-wider">Memory Bank Updates:</div>
+          <div class="text-xs text-gray-400 flex flex-col gap-1">
+            <div id="exam-b3-promotions" class="text-emerald-400 font-mono">+12 items advanced to Box 3 (Mastered)</div>
+            <div id="exam-b1-drops" class="text-rose-400 font-mono">+5 missed items routed to Mistake Graveyard (Box 1)</div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 pt-4">
+          <button onclick="app.startMode('graveyard')" class="flex-1 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition">
+            Clear Missed Questions Now
+          </button>
+          <button onclick="app.navTo('dashboard')" class="flex-1 py-3 px-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs transition">
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="modal-settings" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Engine Settings & State</h3>
+        <button onclick="app.closeSettingsModal()" class="text-gray-400 hover:text-white">✕</button>
+      </div>
+
+      <p class="text-xs text-gray-400 leading-relaxed">
+        All progress is stored directly inside your browser's <code class="text-amber-400 font-mono">localStorage</code>. No external database or logins needed.
+      </p>
+
+      <div class="space-y-3 pt-2">
+        <button onclick="app.exportState()" class="w-full py-2.5 px-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-xs font-semibold transition flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          <span>Copy Progress JSON to Clipboard</span>
+        </button>
+
+        <button onclick="app.retakeDiagnostic()" class="w-full py-2.5 px-3 rounded-xl bg-blue-950/60 hover:bg-blue-900/60 text-blue-300 border border-blue-800 text-xs font-semibold transition">
+          Retake 15Q Calibration Diagnostic
+        </button>
+
+        <button onclick="app.wipeData()" class="w-full py-2.5 px-3 rounded-xl bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-800 text-xs font-semibold transition">
+          Wipe All Progress & Reset App
+        </button>
+      </div>
+
+      <div id="settings-notice" class="hidden text-center text-xs font-mono text-emerald-400 pt-2"></div>
+    </div>
+  </div>
+
+  <footer class="border-t border-gray-900 bg-gray-950/60 py-4 text-center text-[11px] text-gray-600">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>CA DRE Salesperson Examination Cram Companion • Pass Benchmark: 70%</div>
+      <div class="font-mono text-gray-500">Deterministic Leitner Spaced-Repetition Active</div>
+    </div>
+  </footer>
+
+  <script>
+    /* Question Bank strictly aligned with California DRE domain distribution:
+       1. Practice of Real Estate & Disclosures (25%)
+       2. Agency & Fiduciary Duties (17%)
+       3. Property Ownership & Land Use (15%)
+       4. Property Valuation & Financial Analysis (14%)
+       5. Contracts (12%)
+       6. Financing (9%)
+       7. Transfer of Property (8%)
+    */
+    const QUESTION_BANK = [
+      // 1. Practice & Disclosures (25%)
+      {
+        id: "q-disc-01",
+        category: "Disclosures",
+        categoryName: "Real Estate Practice & Disclosures",
+        citation: "CA Civ. Code § 1102.2",
+        question: "Under California law, in which of the following residential transactions is the seller EXEMPT from providing a statutory Transfer Disclosure Statement (TDS)?",
+        options: [
+          "A sale of a single-family home by an owner-occupant represented by an agent",
+          "A transfer ordered by a probate court during estate administration",
+          "The sale of a 4-unit residential building directly by an investor",
+          "A sale of a condominium unit through a dual-agent brokerage"
+        ],
+        correctIndex: 1,
+        explanation: "California Civil Code § 1102.2 explicitly exempts transfers made pursuant to court orders, including probate court sales, bankruptcy transfers, and foreclosure sales from the TDS requirement."
+      },
+      {
+        id: "q-disc-02",
+        category: "Disclosures",
+        categoryName: "Real Estate Practice & Disclosures",
+        citation: "CA Civ. Code § 1103",
+        question: "The Natural Hazard Disclosure (NHD) statement must warn prospective buyers if the property lies within which of the following designated zones?",
+        options: [
+          "A local high crime census tract",
+          "A designated Special Flood Hazard Area or Very High Fire Hazard Severity Zone",
+          "An area located within 5 miles of an active municipal landfill",
+          "A designated historic preservation district"
+        ],
+        correctIndex: 1,
+        explanation: "California Civil Code § 1103 requires disclosure of 6 specific statutory natural hazard zones: Special Flood Hazard Areas, Dam Failure Inundation, Very High Fire Hazard Severity, Wildland Fire (SRA), Earthquake Fault Zones (Alquist-Priolo), and Seismic Hazard Zones."
+      },
+      {
+        id: "q-disc-03",
+        category: "Disclosures",
+        categoryName: "Real Estate Practice & Disclosures",
+        citation: "CA Civ. Code § 1710.2",
+        question: "In California, if a prior occupant died on the real property from natural causes, after what period of time is the seller or agent no longer required to disclose this death to a buyer?",
+        options: [
+          "1 year",
+          "3 years",
+          "5 years",
+          "Never; all deaths must be disclosed indefinitely upon direct inquiry"
+        ],
+        correctIndex: 1,
+        explanation: "Civil Code § 1710.2 specifies that no cause of action arises for failure to disclose an occupant death that occurred more than three years prior to the offer. However, agents must answer truthfully if asked directly, except regarding HIV/AIDS."
+      },
+      {
+        id: "q-disc-04",
+        category: "Disclosures",
+        categoryName: "Real Estate Practice & Disclosures",
+        citation: "CA B&P Code § 10145",
+        question: "A California real estate broker receives trust funds from a buyer. By law, within how many business days must the broker deposit these funds into a neutral escrow or trust account?",
+        options: [
+          "1 business day",
+          "3 business days following receipt",
+          "5 business days",
+          "10 business days"
+        ],
+        correctIndex: 1,
+        explanation: "Under California Business and Professions Code § 10145 and Commissioner's Regulation 2832, trust funds must be deposited into a trust account, neutral escrow depository, or into the hands of the principal within 3 business days."
+      },
+
+      // 2. Agency & Fiduciary Duties (17%)
+      {
+        id: "q-agnc-01",
+        category: "Agency",
+        categoryName: "Agency & Fiduciary Duties",
+        citation: "CA Civ. Code § 2079.16",
+        question: "Which of the following best describes the timing requirement for delivering the statutory 'Disclosure Regarding Real Estate Agency Relationship' (AD Form) to a buyer?",
+        options: [
+          "At the close of escrow along with the final settlement statement",
+          "As soon as practicable prior to execution of the buyer's offer or purchase agreement",
+          "Within 14 calendar days after opening escrow",
+          "Only if the transaction results in a confirmed dual agency"
+        ],
+        correctIndex: 1,
+        explanation: "California Civil Code § 2079.14 mandates that the listing agent provide the disclosure to the seller before entering the listing, and the selling agent provide it to the buyer as soon as practicable prior to the execution of an offer."
+      },
+      {
+        id: "q-agnc-02",
+        category: "Agency",
+        categoryName: "Agency & Fiduciary Duties",
+        citation: "CA Civ. Code § 2079.17",
+        question: "When a California brokerage represents both the buyer and seller in the same transaction with informed written consent (Dual Agency), the broker CANNOT disclose which of the following without express permission?",
+        options: [
+          "Known material defects affecting physical foundation integrity",
+          "That the seller will accept a price less than the listing price, or the buyer will pay more than the offer",
+          "The existence of active CC&Rs or HOA bylaws",
+          "That the property is located in an earthquake fault zone"
+        ],
+        correctIndex: 1,
+        explanation: "In dual agency, California Civil Code § 2079.21 explicitly forbids disclosing to the buyer that the seller will accept less than the asking price, or disclosing to the seller that the buyer will pay more than offered, without express written authorization."
+      },
+      {
+        id: "q-agnc-03",
+        category: "Agency",
+        categoryName: "Agency & Fiduciary Duties",
+        citation: "Easton v. Strassburger / Civ. Code § 2079",
+        question: "Under the landmark ruling in Easton v. Strassburger, a real estate licensee representing a seller of residential 1-to-4 property owes what inspection duty to prospective buyers?",
+        options: [
+          "A duty to hire an engineer to inspect soil compaction",
+          "A duty to conduct a reasonably competent and diligent visual inspection of accessible areas and disclose material facts",
+          "No duty whatsoever; California enforces strict caveat emptor",
+          "A duty to inspect inaccessible crawl spaces, attics, and chimney interiors"
+        ],
+        correctIndex: 1,
+        explanation: "Easton v. Strassburger (and codified in Civ. Code § 2079) established that licensees have an affirmative duty to conduct a reasonably competent and diligent visual inspection of accessible areas and disclose all material facts affecting value."
+      },
+
+      // 3. Property Ownership & Land Use Controls (15%)
+      {
+        id: "q-own-01",
+        category: "Ownership",
+        categoryName: "Property Ownership & Land Use",
+        citation: "CA Civ. Code § 683 (Joint Tenancy)",
+        question: "To establish a valid Joint Tenancy in California real estate, which four unities must be satisfied concurrently?",
+        options: [
+          "Title, Taxes, Term, and Trust",
+          "Time, Title, Interest, and Possession (TTIP)",
+          "Grantor, Grantee, Consideration, and Recording",
+          "Covenant, Seisin, Warranty, and Quiet Enjoyment"
+        ],
+        correctIndex: 1,
+        explanation: "Joint tenancy requires the four classic unities of TTIP: Time (acquired simultaneously), Title (same deed), Interest (equal shares), and Possession (equal right of possession), accompanied by the right of survivorship."
+      },
+      {
+        id: "q-own-02",
+        category: "Ownership",
+        categoryName: "Property Ownership & Land Use",
+        citation: "CA Gov. Code § 66410",
+        question: "Under the California Subdivision Map Act, regulation and design of subdivisions of two or more parcels is controlled primarily by:",
+        options: [
+          "The Federal Department of Housing and Urban Development (HUD)",
+          "The California Real Estate Commissioner",
+          "The local city or county government where the land is located",
+          "The California Coastal Commission exclusively"
+        ],
+        correctIndex: 2,
+        explanation: "The California Subdivision Map Act grants local cities and counties the direct authority to regulate the design, physical layout, and improvements of subdivisions. (The Subdivided Lands Act, in contrast, protects consumers against fraud via the DRE)."
+      },
+
+      // 4. Valuation & Financial Analysis (14%)
+      {
+        id: "q-val-01",
+        category: "Valuation",
+        categoryName: "Property Valuation & Analysis",
+        citation: "Appraisal Theory & IRV Formula",
+        question: "An income-producing commercial building produces a Net Operating Income (NOI) of $120,000 per year. If real estate investors in that market demand an 8% capitalization rate, what is the estimated property value?",
+        options: [
+          "$960,000",
+          "$1,200,000",
+          "$1,500,000",
+          "$1,800,000"
+        ],
+        correctIndex: 2,
+        explanation: "Using the fundamental IRV formula (Value = Income / Rate): $120,000 / 0.08 = $1,500,000. Cap rate is inversely related to property value."
+      },
+      {
+        id: "q-val-02",
+        category: "Valuation",
+        categoryName: "Property Valuation & Analysis",
+        citation: "Appraisal Depreciation Types",
+        question: "A single-family residence features a floor plan where one must walk through the master bedroom to access the only bathroom. In appraisal terminology, this incurable layout flaw is termed:",
+        options: [
+          "Physical deterioration",
+          "Functional obsolescence",
+          "Economic (external) obsolescence",
+          "Deferred maintenance"
+        ],
+        correctIndex: 1,
+        explanation: "Functional obsolescence is a loss in value caused by internal structural flaws, outdated design, or poor layout within the property lines. External/economic obsolescence refers to environmental factors outside property lines."
+      },
+
+      // 5. Contracts (12%)
+      {
+        id: "q-cntr-01",
+        category: "Contracts",
+        categoryName: "Contracts & Purchase Agreements",
+        citation: "CA Civ. Code § 1624 (Statute of Frauds)",
+        question: "Under the California Statute of Frauds, which of the following real estate contracts MUST be in writing to be legally enforceable in court?",
+        options: [
+          "A month-to-month residential lease",
+          "An agreement employing a real estate broker to purchase or sell real estate for compensation",
+          "A mutual non-exclusive agreement to paint a detached garage",
+          "A residential lease for a term of exactly nine months"
+        ],
+        correctIndex: 1,
+        explanation: "California Civil Code § 1624(a)(4) mandates that any agreement authorizing or employing an agent, broker, or other person to purchase or sell real estate for compensation or commission must be in writing."
+      },
+      {
+        id: "q-cntr-02",
+        category: "Contracts",
+        categoryName: "Contracts & Purchase Agreements",
+        citation: "Contract Law Elements",
+        question: "Which of the following is NOT one of the essential four elements required for a contract to be legally valid under California law?",
+        options: [
+          "Parties capable of contracting",
+          "Mutual consent (offer and acceptance)",
+          "A lawful object",
+          "Recording at the county recorder's office"
+        ],
+        correctIndex: 3,
+        explanation: "Recording is never required for a contract or deed to be valid between the parties; it merely provides constructive notice to third parties. The four essential elements are: Capable parties, Mutual consent, Lawful object, and Sufficient consideration."
+      },
+
+      // 6. Financing (9%)
+      {
+        id: "q-fin-01",
+        category: "Financing",
+        categoryName: "Real Estate Financing",
+        citation: "Deed of Trust Law",
+        question: "In a standard California Deed of Trust, who holds 'bare legal title' with the power of sale in the event of borrower default?",
+        options: [
+          "The Trustor (Borrower)",
+          "The Beneficiary (Lender)",
+          "The Trustee (Neutral third party)",
+          "The County Sheriff"
+        ],
+        correctIndex: 2,
+        explanation: "In a California Deed of Trust: Trustor = Borrower (holds equitable title); Beneficiary = Lender; Trustee = Neutral third party holding naked legal title with the power of sale upon default."
+      },
+
+      // 7. Transfer of Property (8%)
+      {
+        id: "q-trn-01",
+        category: "Transfer",
+        categoryName: "Transfer of Property & Escrow",
+        citation: "CA Civ. Code § 1056 (Delivery)",
+        question: "For a California Grant Deed to effectively transfer title to real estate, what legal act is indispensable?",
+        options: [
+          "The deed must be recorded with the County Recorder",
+          "The deed must be signed by the grantee",
+          "The deed must be delivered by the grantor and accepted by the grantee",
+          "The deed must state the exact dollar amount of the purchase price"
+        ],
+        correctIndex: 2,
+        explanation: "A deed does not take effect until it is delivered by the grantor and accepted by the grantee. Neither recording nor the grantee's signature is required to pass legal title."
+      }
+    ];
+
+    // Statutory Flashcards Bank
+    const FLASHCARD_DECK = [
+      {
+        tag: "Landmark Case",
+        title: "Easton v. Strassburger (1984)",
+        prompt: "What duty was created for California licensees regarding physical inspections?",
+        back: "Licensees have an affirmative duty to conduct a reasonably competent and diligent visual inspection of accessible areas and disclose all material facts affecting property value.",
+        statute: "Codified in CA Civ. Code § 2079"
+      },
+      {
+        tag: "Mandatory Disclosure",
+        title: "Real Estate Transfer Disclosure Statement (TDS)",
+        prompt: "When is the TDS required, and who fills out which section?",
+        back: "Mandatory for sales of 1-to-4 residential units. Seller completes Section II; Listing and Selling agents must conduct visual inspections and complete Sections III and IV.",
+        statute: "CA Civ. Code § 1102"
+      },
+      {
+        tag: "Fiduciary Acronym",
+        title: "OLD CAR",
+        prompt: "What are the six classic fiduciary duties owed to a principal?",
+        back: "O - Obedience\nL - Loyalty\nD - Disclosure\nC - Confidentiality\nA - Accounting\nR - Reasonable Care and Diligence",
+        statute: "Common Law & CA Agency Rules"
+      },
+      {
+        tag: "Tax Code",
+        title: "Proposition 13 (CA Property Taxes)",
+        prompt: "What is the baseline property tax rate and maximum annual inflationary cap?",
+        back: "Baseline tax rate is 1% of assessed value (plus local voter-approved bonds). Assessed value cannot increase more than 2% per year unless reassessed upon change of ownership or new construction.",
+        statute: "CA Const. Art. XIII A"
+      },
+      {
+        tag: "Co-Ownership",
+        title: "Joint Tenancy vs. Tenancy in Common",
+        prompt: "What is the crucial legal distinction regarding survivorship?",
+        back: "Joint Tenancy features the Right of Survivorship (deceased co-owner's share passes automatically to surviving co-owners; cannot be willed). Tenancy in Common has NO survivorship (inheritable by heirs).",
+        statute: "CA Civ. Code § 683"
+      },
+      {
+        tag: "Contract Law",
+        title: "Statute of Frauds",
+        prompt: "Which real estate agreements MUST be in writing under California law?",
+        back: "Any agreement to sell real property, leases exceeding one year, and broker listing agreements authorizing compensation must be in writing to be legally enforceable.",
+        statute: "CA Civ. Code § 1624"
+      },
+      {
+        tag: "Financing Instrument",
+        title: "Deed of Trust (The Three Parties)",
+        prompt: "Who are the three parties and what do they hold?",
+        back: "Trustor = Borrower (holds equitable title)\nBeneficiary = Lender (holds promissory note)\nTrustee = Neutral 3rd party (holds bare legal title with power of non-judicial foreclosure sale).",
+        statute: "CA Civ. Code § 2924"
+      },
+      {
+        tag: "Statutory Law",
+        title: "Megan's Law Disclosure",
+        prompt: "What is required regarding registered sex offender databases?",
+        back: "Every California residential lease or sales contract must include a statutory notice advising the buyer/tenant of the state-operated database website (meganslaw.ca.gov).",
+        statute: "CA Civ. Code § 2079.10a"
+      },
+      {
+        tag: "Federal Law",
+        title: "1031 Like-Kind Exchange",
+        prompt: "What are the two critical strict timelines to defer capital gains?",
+        back: "1. 45 days to formally identify replacement properties.\n2. 180 days to close escrow on the replacement property.\nApplies only to investment/income property, NOT primary personal residences.",
+        statute: "IRC § 1031"
+      },
+      {
+        tag: "Appraisal Math",
+        title: "Capitalization Rate (Cap Rate)",
+        prompt: "How is Cap Rate calculated and what does an increase indicate?",
+        back: "Cap Rate = Net Operating Income (NOI) / Current Market Value.\nWhen Cap Rate goes UP, risk is higher and property value goes DOWN.",
+        statute: "IRV Formula (I = R x V)"
+      }
+    ];
+  </script>
+
+  <script>
+    const STORAGE_KEY = "ca_re_cram_engine_v1";
+
+    class CramEngine {
+      constructor() {
+        this.state = this.loadState();
+        this.activeQuiz = null;
+        this.quizIndex = 0;
+        this.quizAnswers = [];
+        this.timerInterval = null;
+        this.secondsRemaining = 0;
+        this.currentCardIndex = 0;
+        this.cardFlipped = false;
+      }
+
+      loadState() {
+        const defaultState = {
+          profile: null, // { hoursLeft, currentLevel, weakPoint, assignedTier, diagnosticCompleted }
+          memoryBank: {
+            box1: [], // IDs in Box 1 (Missed / Critical)
+            box2: [], // IDs in Box 2 (Review)
+            box3: []  // IDs in Box 3 (Mastered)
+          },
+          history: {
+            totalAttempted: 0,
+            totalCorrect: 0,
+            categories: {
+              Disclosures: { attempted: 0, correct: 0 },
+              Agency: { attempted: 0, correct: 0 },
+              Ownership: { attempted: 0, correct: 0 },
+              Valuation: { attempted: 0, correct: 0 },
+              Contracts: { attempted: 0, correct: 0 },
+              Financing: { attempted: 0, correct: 0 },
+              Transfer: { attempted: 0, correct: 0 }
+            }
+          },
+          startTime: Date.now(),
+          targetHours: 72
+        };
+
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return defaultState;
+          const parsed = JSON.parse(raw);
+          return { ...defaultState, ...parsed };
+        } catch (e) {
+          console.error("Failed loading local storage", e);
+          return defaultState;
+        }
+      }
+
+      saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+        } catch (e) {
+          console.error("Error saving state", e);
+        }
+        this.updateHeaderMetrics();
+      }
+
+      init() {
+        this.updateHeaderMetrics();
+        this.startHeaderCountdown();
+
+        // Check if user has completed onboarding
+        if (!this.state.profile || !this.state.profile.diagnosticCompleted) {
+          this.navTo("onboarding");
+        } else {
+          this.navTo("dashboard");
+        }
+      }
+
+      updateHeaderMetrics() {
+        const b1Count = this.state.memoryBank.box1.length;
+        const b2Count = this.state.memoryBank.box2.length;
+        const b3Count = this.state.memoryBank.box3.length;
+
+        document.getElementById("stat-b1").textContent = b1Count;
+        document.getElementById("stat-b2").textContent = b2Count;
+        document.getElementById("stat-b3").textContent = b3Count;
+
+        const tierTag = document.getElementById("header-tier-tag");
+        if (this.state.profile && this.state.profile.assignedTier) {
+          tierTag.classList.remove("hidden");
+          tierTag.textContent = this.state.profile.assignedTier.split(":")[0];
+          if (this.state.profile.assignedTier.includes("Tier 1")) {
+            tierTag.className = "text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-red-950/80 text-red-400 border border-red-800";
+          } else if (this.state.profile.assignedTier.includes("Tier 2")) {
+            tierTag.className = "text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-amber-950/80 text-amber-400 border border-amber-800";
+          } else {
+            tierTag.className = "text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800";
+          }
+        }
+      }
+
+      startHeaderCountdown() {
+        const updateTimer = () => {
+          if (!this.state.profile) {
+            document.getElementById("header-countdown").textContent = "72h:00m left";
+            return;
+          }
+          const totalMs = (this.state.profile.hoursLeft || 72) * 60 * 60 * 1000;
+          const elapsed = Date.now() - (this.state.startTime || Date.now());
+          const remain = Math.max(0, totalMs - elapsed);
+
+          const h = Math.floor(remain / (1000 * 60 * 60));
+          const m = Math.floor((remain % (1000 * 60 * 60)) / (1000 * 60));
+          document.getElementById("header-countdown").textContent = `${h}h:${m < 10 ? '0' : ''}${m}m left`;
+        };
+        updateTimer();
+        setInterval(updateTimer, 60000);
+      }
+
+      navTo(viewName) {
+        clearInterval(this.timerInterval);
+        const views = [
+          "view-onboarding",
+          "view-quiz",
+          "view-diagnostic-result",
+          "view-dashboard",
+          "view-flashcards",
+          "view-exam-result"
+        ];
+        views.forEach(v => {
+          const el = document.getElementById(v);
+          if (el) el.classList.add("hidden");
+        });
+
+        const target = document.getElementById(`view-${viewName}`);
+        if (target) {
+          target.classList.remove("hidden");
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        if (viewName === "dashboard") {
+          this.refreshDashboard();
+        } else if (viewName === "flashcards") {
+          this.renderFlashcard();
+        }
+      }
+
+      handleOnboardingSubmit(e) {
+        e.preventDefault();
+        const form = e.target;
+        const hoursLeft = parseInt(form.hoursLeft.value, 10);
+        const currentLevel = form.currentLevel.value;
+        const weakPoint = form.weakPoint.value;
+
+        this.state.profile = {
+          hoursLeft,
+          currentLevel,
+          weakPoint,
+          assignedTier: null,
+          diagnosticCompleted: false,
+          diagnosticScore: 0
+        };
+        this.state.startTime = Date.now();
+        this.state.targetHours = hoursLeft;
+        this.saveState();
+
+        // Launch the 15-question calibration diagnostic
+        this.startDiagnosticExam();
+      }
+
+      startDiagnosticExam() {
+        // Deterministically slice 15 questions mirroring the 7 DRE categories
+        const diagnosticSet = [...QUESTION_BANK].slice(0, 15);
+        this.activeQuiz = {
+          mode: "diagnostic",
+          title: "15-Question Calibration Diagnostic",
+          questions: diagnosticSet,
+          results: []
+        };
+        this.quizIndex = 0;
+        this.navTo("quiz");
+        this.renderQuizQuestion();
+      }
+
+      renderQuizQuestion() {
+        if (!this.activeQuiz) return;
+        const q = this.activeQuiz.questions[this.quizIndex];
+        const total = this.activeQuiz.questions.length;
+
+        // Reset elements
+        document.getElementById("quiz-badge").textContent = this.activeQuiz.title;
+        document.getElementById("quiz-category-tag").textContent = q.categoryName;
+        document.getElementById("quiz-question-counter").textContent = `${this.quizIndex + 1} / ${total}`;
+        document.getElementById("quiz-law-ref").textContent = q.citation || "CA Real Estate Law";
+        document.getElementById("quiz-question-text").textContent = q.question;
+        
+        // Progress bar
+        const pct = ((this.quizIndex) / total) * 100;
+        document.getElementById("quiz-progress-fill").style.width = `${pct}%`;
+
+        // Leitner box indicator for this specific question
+        const boxLabel = this.getQuestionBoxLabel(q.id);
+        document.getElementById("quiz-leitner-indicator").firstElementChild.textContent = boxLabel;
+
+        // Render options
+        const container = document.getElementById("quiz-options-container");
+        container.innerHTML = "";
+        
+        q.options.forEach((optText, idx) => {
+          const letter = ["A", "B", "C", "D"][idx];
+          const btn = document.createElement("button");
+          btn.className = "w-full text-left p-3.5 sm:p-4 rounded-xl bg-gray-950 border border-gray-800 hover:border-gray-700 text-xs sm:text-sm text-gray-200 font-medium transition flex items-start gap-3 group";
+          btn.innerHTML = `
+            <span class="w-6 h-6 rounded-lg bg-gray-900 border border-gray-700 group-hover:border-amber-400 group-hover:text-amber-400 flex items-center justify-center font-mono font-bold text-xs text-gray-400 shrink-0">
+              ${letter}
+            </span>
+            <span class="pt-0.5 leading-relaxed">${optText}</span>
+          `;
+          btn.onclick = () => this.handleOptionSelection(idx);
+          container.appendChild(btn);
+        });
+
+        // Hide explanation drawer
+        document.getElementById("quiz-explanation-box").classList.add("hidden");
+
+        // Start 60-second gut-check timer
+        this.startQuestionTimer(60);
+      }
+
+      startQuestionTimer(seconds) {
+        clearInterval(this.timerInterval);
+        this.secondsRemaining = seconds;
+        const timerEl = document.getElementById("quiz-timer");
+        
+        const updateText = () => {
+          const m = Math.floor(this.secondsRemaining / 60);
+          const s = this.secondsRemaining % 60;
+          timerEl.textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+          if (this.secondsRemaining <= 10) {
+            timerEl.className = "px-2 py-0.5 bg-rose-950 border border-rose-800 text-rose-400 rounded font-mono";
+          } else {
+            timerEl.className = "px-2 py-0.5 bg-gray-950 border border-gray-800 text-amber-400 rounded font-mono";
+          }
+        };
+
+        updateText();
+        this.timerInterval = setInterval(() => {
+          this.secondsRemaining--;
+          updateText();
+          if (this.secondsRemaining <= 0) {
+            clearInterval(this.timerInterval);
+            // Auto timeout marks missed and reveals
+            this.handleOptionSelection(-1);
+          }
+        }, 1000);
+      }
+
+      getQuestionBoxLabel(qid) {
+        if (this.state.memoryBank.box3.includes(qid)) return "Memory Box 3 (Mastered)";
+        if (this.state.memoryBank.box2.includes(qid)) return "Memory Box 2 (Review)";
+        if (this.state.memoryBank.box1.includes(qid)) return "Memory Box 1 (Critical Miss)";
+        return "New Unattempted Question";
+      }
+
+      handleOptionSelection(selectedIndex) {
+        clearInterval(this.timerInterval);
+        const q = this.activeQuiz.questions[this.quizIndex];
+        const isCorrect = (selectedIndex === q.correctIndex);
+
+        // Record response
+        this.activeQuiz.results.push({
+          questionId: q.id,
+          category: q.category,
+          isCorrect
+        });
+
+        // Mutate Leitner Boxes deterministically
+        this.updateLeitnerBox(q.id, isCorrect);
+
+        // Update overall history metrics
+        this.state.history.totalAttempted++;
+        if (isCorrect) this.state.history.totalCorrect++;
+
+        if (!this.state.history.categories[q.category]) {
+          this.state.history.categories[q.category] = { attempted: 0, correct: 0 };
+        }
+        this.state.history.categories[q.category].attempted++;
+        if (isCorrect) this.state.history.categories[q.category].correct++;
+        this.saveState();
+
+        // Visual feedback on option buttons
+        const container = document.getElementById("quiz-options-container");
+        const buttons = container.getElementsByTagName("button");
+        for (let i = 0; i < buttons.length; i++) {
+          buttons[i].disabled = true;
+          buttons[i].classList.remove("hover:border-gray-700");
+          if (i === q.correctIndex) {
+            buttons[i].className = "w-full text-left p-3.5 sm:p-4 rounded-xl bg-emerald-950/70 border border-emerald-500 text-emerald-100 font-medium flex items-start gap-3";
+          } else if (i === selectedIndex && !isCorrect) {
+            buttons[i].className = "w-full text-left p-3.5 sm:p-4 rounded-xl bg-rose-950/70 border border-rose-500 text-rose-100 font-medium flex items-start gap-3";
+          } else {
+            buttons[i].className = "w-full text-left p-3.5 sm:p-4 rounded-xl bg-gray-950/40 border border-gray-900 text-gray-500 font-medium flex items-start gap-3 opacity-60";
+          }
+        }
+
+        // Show Explanation Box
+        const expBox = document.getElementById("quiz-explanation-box");
+        const headline = document.getElementById("explanation-headline");
+        const body = document.getElementById("explanation-body");
+        const cit = document.getElementById("explanation-citation");
+        const icon = document.getElementById("explanation-icon");
+
+        if (isCorrect) {
+          headline.textContent = "Correct! High-Yield Rule Verified";
+          headline.className = "font-bold text-emerald-400 text-sm";
+          icon.className = "p-1.5 rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-800 shrink-0 mt-0.5";
+          icon.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
+        } else {
+          headline.textContent = (selectedIndex === -1) ? "Time Expired! Added to Box 1" : "Incorrect — Added to Mistake Graveyard (Box 1)";
+          headline.className = "font-bold text-rose-400 text-sm";
+          icon.className = "p-1.5 rounded-lg bg-rose-950 text-rose-400 border border-rose-800 shrink-0 mt-0.5";
+          icon.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`;
+        }
+
+        body.textContent = q.explanation;
+        cit.textContent = `Statutory Reference: ${q.citation}`;
+        expBox.classList.remove("hidden");
+      }
+
+      updateLeitnerBox(qid, isCorrect) {
+        let b1 = this.state.memoryBank.box1;
+        let b2 = this.state.memoryBank.box2;
+        let b3 = this.state.memoryBank.box3;
+
+        // Remove from all boxes first
+        b1 = b1.filter(id => id !== qid);
+        b2 = b2.filter(id => id !== qid);
+        b3 = b3.filter(id => id !== qid);
+
+        if (isCorrect) {
+          // If was in box 2 -> goes to Box 3
+          // If was in box 1 or new -> goes to Box 2
+          const wasInB2 = this.state.memoryBank.box2.includes(qid);
+          const wasInB3 = this.state.memoryBank.box3.includes(qid);
+
+          if (wasInB2 || wasInB3) {
+            b3.push(qid);
+          } else {
+            b2.push(qid);
+          }
+        } else {
+          // Any wrong answer drops directly to Box 1
+          b1.push(qid);
+        }
+
+        this.state.memoryBank.box1 = b1;
+        this.state.memoryBank.box2 = b2;
+        this.state.memoryBank.box3 = b3;
+      }
+
+      nextQuestion() {
+        this.quizIndex++;
+        if (this.quizIndex < this.activeQuiz.questions.length) {
+          this.renderQuizQuestion();
+        } else {
+          this.finishQuiz();
+        }
+      }
+
+      finishQuiz() {
+        const correctCount = this.activeQuiz.results.filter(r => r.isCorrect).length;
+        const total = this.activeQuiz.results.length;
+        const pct = Math.round((correctCount / total) * 100);
+
+        if (this.activeQuiz.mode === "diagnostic") {
+          this.state.profile.diagnosticCompleted = true;
+          this.state.profile.diagnosticScore = correctCount;
+
+          // Tier Prescription Logic
+          let tier = "Tier 2: Near the Margin (45-69%)";
+          if (pct < 45) {
+            tier = "Tier 1: Code Red Emergency (<45%)";
+          } else if (pct >= 70) {
+            tier = "Tier 3: Polish & Pass (≥70%)";
+          }
+          this.state.profile.assignedTier = tier;
+          this.saveState();
+          this.renderDiagnosticResultView(correctCount, total, pct, tier);
+          this.navTo("diagnostic-result");
+        } else {
+          // Standard / Mock exam summary
+          this.renderExamSummary(correctCount, total, pct);
+          this.navTo("exam-result");
+        }
+      }
+
+      renderDiagnosticResultView(correct, total, pct, tier) {
+        document.getElementById("diag-score").textContent = `${correct}/${total}`;
+        document.getElementById("diag-percent").textContent = `(${pct}%)`;
+
+        const tierCard = document.getElementById("diag-tier-card");
+        if (pct < 45) {
+          tierCard.className = "my-6 p-5 rounded-xl border border-rose-800 bg-rose-950/30";
+          tierCard.innerHTML = `
+            <div class="flex items-center gap-2 text-rose-400 font-bold text-sm uppercase font-mono mb-1">
+              ⚠️ Tier 1: Code Red Emergency (<45%)
+            </div>
+            <div class="text-xs text-rose-200 leading-relaxed">
+              <strong>Emergency Triage Protocol Prescribed:</strong> You are missing foundational statutory knowledge. 
+              <strong>Do not waste time on appraisal math or obscure deed types.</strong> 
+              Spend 100% of the next 48 hours exclusively drilling <strong>Disclosures</strong> and <strong>Agency</strong> (which make up 42% of the entire California exam).
+            </div>
+          `;
+        } else if (pct < 70) {
+          tierCard.className = "my-6 p-5 rounded-xl border border-amber-800 bg-amber-950/30";
+          tierCard.innerHTML = `
+            <div class="flex items-center gap-2 text-amber-400 font-bold text-sm uppercase font-mono mb-1">
+              ⚡ Tier 2: Near The Margin (45% - 69%)
+            </div>
+            <div class="text-xs text-amber-200 leading-relaxed">
+              <strong>Gap-Closing Protocol Prescribed:</strong> You are hovering right below the 70% passing threshold. 
+              Your immediate focus is to empty the <strong>Mistake Graveyard (Box 1)</strong> and drill 10-question sprint sets on your weakest domain. 5-7 more correct questions will pass you.
+            </div>
+          `;
+        } else {
+          tierCard.className = "my-6 p-5 rounded-xl border border-emerald-800 bg-emerald-950/30";
+          tierCard.innerHTML = `
+            <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm uppercase font-mono mb-1">
+              ✅ Tier 3: Polish & Pass (≥70%)
+            </div>
+            <div class="text-xs text-emerald-200 leading-relaxed">
+              <strong>Passing Baseline Confirmed:</strong> You have cleared the state passing threshold. 
+              Use your remaining 72 hours for full-length 30Q/150Q timed simulation endurance runs, review landmark cases in the Flashcards deck, and prevent mental fatigue.
+            </div>
+          `;
+        }
+
+        // Render per-category breakdown bars
+        const barsContainer = document.getElementById("diag-category-bars");
+        barsContainer.innerHTML = "";
+
+        const categoryLabels = {
+          Disclosures: "Disclosures (25% Weight)",
+          Agency: "Agency & Duties (17% Weight)",
+          Ownership: "Ownership & Vesting (15% Weight)",
+          Valuation: "Valuation & Math (14% Weight)",
+          Contracts: "Contracts (12% Weight)",
+          Financing: "Financing (9% Weight)",
+          Transfer: "Transfer & Deeds (8% Weight)"
+        };
+
+        Object.keys(categoryLabels).forEach(catKey => {
+          const stats = this.state.history.categories[catKey] || { attempted: 0, correct: 0 };
+          const catPct = stats.attempted > 0 ? Math.round((stats.correct / stats.attempted) * 100) : 0;
+          const barColor = catPct >= 70 ? "bg-emerald-400" : (catPct >= 50 ? "bg-amber-400" : "bg-rose-500");
+
+          const row = document.createElement("div");
+          row.className = "space-y-1";
+          row.innerHTML = `
+            <div class="flex justify-between text-xs">
+              <span class="text-gray-300">${categoryLabels[catKey]}</span>
+              <span class="font-mono text-gray-400">${stats.correct}/${stats.attempted} (${catPct}%)</span>
+            </div>
+            <div class="w-full bg-gray-950 h-1.5 rounded-full overflow-hidden border border-gray-800">
+              <div class="${barColor} h-full" style="width: ${catPct}%"></div>
+            </div>
+          `;
+          barsContainer.appendChild(row);
+        });
+      }
+
+      refreshDashboard() {
+        const h = this.state.history;
+        const total = h.totalAttempted;
+        const correct = h.totalCorrect;
+        const overallPct = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+        document.getElementById("dash-metric-score").textContent = `${overallPct}%`;
+        document.getElementById("dash-bar-score").style.width = `${Math.min(100, overallPct)}%`;
+
+        const b1 = this.state.memoryBank.box1.length;
+        const b2 = this.state.memoryBank.box2.length;
+        const b3 = this.state.memoryBank.box3.length;
+
+        document.getElementById("dash-metric-b1").textContent = b1;
+        document.getElementById("dash-metric-b2").textContent = b2;
+        document.getElementById("dash-metric-b3").textContent = b3;
+        document.getElementById("dash-graveyard-count").textContent = `${b1} Unresolved`;
+
+        // Update Tier Prescription Header
+        const profile = this.state.profile;
+        if (profile && profile.assignedTier) {
+          document.getElementById("dash-tier-title").textContent = profile.assignedTier;
+          const icon = document.getElementById("dash-tier-icon");
+          const desc = document.getElementById("dash-tier-desc");
+
+          if (profile.assignedTier.includes("Tier 1")) {
+            icon.className = "w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shrink-0 bg-rose-950 text-rose-400 border border-rose-800";
+            icon.textContent = "🚨";
+            desc.textContent = "Triage Protocol: Skip edge cases. Drill Disclosures & Agency until Box 1 drops to zero.";
+          } else if (profile.assignedTier.includes("Tier 2")) {
+            icon.className = "w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shrink-0 bg-amber-950 text-amber-400 border border-amber-800";
+            icon.textContent = "⚡";
+            desc.textContent = "Gap-Closing: Focus on weak domains & run 10Q Sprints to cross the 70% threshold.";
+          } else {
+            icon.className = "w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shrink-0 bg-emerald-950 text-emerald-400 border border-emerald-800";
+            icon.textContent = "🎯";
+            desc.textContent = "Polish & Retention: Maintain passing momentum with timed mock exams and flashcard review.";
+          }
+        }
+      }
+
+      startPrescribedSprint() {
+        this.startMode("sprint");
+      }
+
+      startMode(modeName) {
+        if (modeName === "graveyard") {
+          const b1Ids = this.state.memoryBank.box1;
+          if (b1Ids.length === 0) {
+            alert("Great work! Your Mistake Graveyard (Box 1) is currently empty. Drill other categories to test your memory.");
+            return;
+          }
+          const questions = QUESTION_BANK.filter(q => b1Ids.includes(q.id));
+          this.activeQuiz = {
+            mode: "graveyard",
+            title: "Mistake Graveyard (Box 1 Remediation)",
+            questions: questions.length > 0 ? questions : QUESTION_BANK.slice(0, 5),
+            results: []
+          };
+        } else if (modeName === "sprint") {
+          // 10 high-yield questions prioritizing Box 1 items, then random
+          const b1Questions = QUESTION_BANK.filter(q => this.state.memoryBank.box1.includes(q.id));
+          const others = QUESTION_BANK.filter(q => !this.state.memoryBank.box1.includes(q.id));
+          const pool = [...b1Questions, ...others].slice(0, 10);
+          this.activeQuiz = {
+            mode: "sprint",
+            title: "72-Hour Rapid Sprint (10Q)",
+            questions: pool,
+            results: []
+          };
+        }
+
+        this.quizIndex = 0;
+        this.navTo("quiz");
+        this.renderQuizQuestion();
+      }
+
+      startCategoryDrill() {
+        const cat = document.getElementById("dash-category-select").value;
+        const matching = QUESTION_BANK.filter(q => q.category === cat);
+        this.activeQuiz = {
+          mode: "category",
+          title: `Drill: ${cat} Domain`,
+          questions: matching.length > 0 ? matching : QUESTION_BANK.slice(0, 5),
+          results: []
+        };
+        this.quizIndex = 0;
+        this.navTo("quiz");
+        this.renderQuizQuestion();
+      }
+
+      startMockExam(questionCount) {
+        // Shuffle pool
+        const shuffled = [...QUESTION_BANK].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, questionCount);
+
+        this.activeQuiz = {
+          mode: "mock",
+          title: `${questionCount}-Question Full DRE Mock Simulation`,
+          questions: selected,
+          results: []
+        };
+        this.quizIndex = 0;
+        this.navTo("quiz");
+        this.renderQuizQuestion();
+      }
+
+      renderExamSummary(correct, total, pct) {
+        const scoreEl = document.getElementById("exam-result-score");
+        const statusBadge = document.getElementById("exam-status-badge");
+        const summary = document.getElementById("exam-result-summary");
+
+        scoreEl.textContent = `${pct}%`;
+
+        if (pct >= 70) {
+          statusBadge.textContent = "OFFICIALLY PASSED (≥70%)";
+          statusBadge.className = "inline-block px-3 py-1 rounded-full text-xs font-mono uppercase font-bold tracking-widest bg-emerald-950 text-emerald-400 border border-emerald-800";
+          summary.textContent = `You scored ${correct} out of ${total} correct (${pct}%). This clears the California DRE standard for passing the salesperson exam.`;
+        } else {
+          statusBadge.textContent = "DID NOT PASS (<70%)";
+          statusBadge.className = "inline-block px-3 py-1 rounded-full text-xs font-mono uppercase font-bold tracking-widest bg-rose-950 text-rose-400 border border-rose-800";
+          summary.textContent = `You scored ${correct} out of ${total} correct (${pct}%). The CA Department of Real Estate requires at least 70% to receive a license. Missed items are queued in Box 1.`;
+        }
+
+        document.getElementById("exam-b3-promotions").textContent = `Questions now in Mastered Box 3: ${this.state.memoryBank.box3.length}`;
+        document.getElementById("exam-b1-drops").textContent = `Unresolved items in Mistake Graveyard: ${this.state.memoryBank.box1.length}`;
+      }
+
+      renderFlashcard() {
+        const card = FLASHCARD_DECK[this.currentCardIndex];
+        const counter = document.getElementById("flashcard-counter");
+        counter.textContent = `Card ${this.currentCardIndex + 1} / ${FLASHCARD_DECK.length}`;
+
+        document.getElementById("card-tag").textContent = card.tag;
+        document.getElementById("card-title").textContent = card.title;
+        document.getElementById("card-back-text").textContent = card.back;
+        document.getElementById("card-back-statute").textContent = card.statute;
+
+        // Reset flip state to front
+        this.cardFlipped = false;
+        document.getElementById("flashcard-front").classList.remove("hidden");
+        document.getElementById("flashcard-back").classList.add("hidden");
+      }
+
+      flipCard() {
+        this.cardFlipped = !this.cardFlipped;
+        const front = document.getElementById("flashcard-front");
+        const back = document.getElementById("flashcard-back");
+
+        if (this.cardFlipped) {
+          front.classList.add("hidden");
+          back.classList.remove("hidden");
+        } else {
+          front.classList.remove("hidden");
+          back.classList.add("hidden");
+        }
+      }
+
+      nextCard() {
+        this.currentCardIndex = (this.currentCardIndex + 1) % FLASHCARD_DECK.length;
+        this.renderFlashcard();
+      }
+
+      prevCard() {
+        this.currentCardIndex = (this.currentCardIndex - 1 + FLASHCARD_DECK.length) % FLASHCARD_DECK.length;
+        this.renderFlashcard();
+      }
+
+      showResetModal() {
+        document.getElementById("modal-settings").classList.remove("hidden");
+      }
+
+      closeSettingsModal() {
+        document.getElementById("modal-settings").classList.add("hidden");
+        document.getElementById("settings-notice").classList.add("hidden");
+      }
+
+      exportState() {
+        const text = JSON.stringify(this.state, null, 2);
+        const notice = document.getElementById("settings-notice");
+
+        // Copy fallback
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          notice.textContent = "✓ Progress JSON copied to clipboard!";
+          notice.classList.remove("hidden");
+        } catch (err) {
+          notice.textContent = "Failed to copy directly.";
+          notice.classList.remove("hidden");
+        }
+        document.body.removeChild(textArea);
+      }
+
+      retakeDiagnostic() {
+        this.closeSettingsModal();
+        this.startDiagnosticExam();
+      }
+
+      wipeData() {
+        localStorage.removeItem(STORAGE_KEY);
+        this.state = this.loadState();
+        this.closeSettingsModal();
+        this.init();
+      }
+    }
+
+    // Initialize global app instance on DOM load
+    let app;
+    window.addEventListener("DOMContentLoaded", () => {
+      app = new CramEngine();
+      app.init();
+    });
+  </script>
+</body>
+</html>
