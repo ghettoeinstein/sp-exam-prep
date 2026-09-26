@@ -46,6 +46,12 @@
     body[data-font="lexend"] { font-family: Lexend, Inter, system-ui, sans-serif; }
     body[data-font="system"] { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
     body, button, input, select, textarea { font-family: inherit; }
+    *, *::before, *::after { box-sizing: border-box; }
+    main, section, div, article, aside { min-width: 0; }
+    h1, h2, h3, p, span, button, label { overflow-wrap: anywhere; }
+    main { max-width: 100vw; overflow-x: hidden; }
+    #view-onboarding { width: calc(100vw - 2rem) !important; max-width: 36rem !important; }
+    #view-onboarding > div { width: 100% !important; max-width: 100% !important; }
     .accessibility-select {
       background: #020617;
       border: 1px solid #374151;
@@ -112,6 +118,80 @@
     @supports (height: 100dvh) {
       body { min-height: 100dvh; }
     }
+
+    /* SP72 default theme: FreeCreditBot-style light, calm, useful, no dark AI chrome. */
+    body[data-theme="light"] {
+      background: #f7f4ed;
+      color: #11100e;
+      overflow-x: hidden;
+    }
+    body[data-theme="light"] #ambient-canvas { display: none; }
+    body[data-theme="light"] header,
+    body[data-theme="light"] .glass-card,
+    body[data-theme="light"] .bg-gray-900,
+    body[data-theme="light"] .bg-gray-950,
+    body[data-theme="light"] .bg-gray-800,
+    body[data-theme="light"] [class*="bg-gray-900"],
+    body[data-theme="light"] [class*="bg-gray-950"],
+    body[data-theme="light"] [class*="bg-gray-800"] {
+      background: rgba(255, 253, 248, 0.92) !important;
+      border-color: #e6dccb !important;
+      color: #11100e !important;
+      box-shadow: 0 14px 40px rgba(49, 36, 20, 0.08), inset 0 1px 0 rgba(255,255,255,.85) !important;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    body[data-theme="light"] main::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(217,164,65,.20), transparent 32%),
+        radial-gradient(circle at 88% 0%, rgba(22,115,230,.10), transparent 30%),
+        linear-gradient(180deg, #fffdf8 0%, #f7f4ed 58%, #efe6d7 100%);
+    }
+    body[data-theme="light"] .text-white,
+    body[data-theme="light"] .text-gray-100,
+    body[data-theme="light"] .text-gray-200,
+    body[data-theme="light"] .text-gray-300 { color: #11100e !important; }
+    body[data-theme="light"] .text-gray-400,
+    body[data-theme="light"] .text-gray-500 { color: #675f54 !important; }
+    body[data-theme="light"] .text-gray-600,
+    body[data-theme="light"] .text-gray-700 { color: #8a7f70 !important; }
+    body[data-theme="light"] .border-gray-800,
+    body[data-theme="light"] .border-gray-700,
+    body[data-theme="light"] .border-white\/10 { border-color: #e6dccb !important; }
+    body[data-theme="light"] .bg-white\/\[\.045\],
+    body[data-theme="light"] .bg-white\/5,
+    body[data-theme="light"] .bg-black\/30 { background: rgba(255,255,255,.62) !important; }
+    body[data-theme="light"] .option-card {
+      background: #fffdf8 !important;
+      border-color: #e2d6c4 !important;
+      color: #11100e !important;
+    }
+    body[data-theme="light"] .option-card:hover { border-color: #1673e6 !important; box-shadow: 0 12px 30px rgba(22,115,230,.10) !important; }
+    body[data-theme="light"] .accessibility-select,
+    body[data-theme="light"] select,
+    body[data-theme="light"] input {
+      background: #fffdf8 !important;
+      border-color: #d8cbb7 !important;
+      color: #11100e !important;
+    }
+    body[data-theme="light"] button:focus-visible,
+    body[data-theme="light"] a:focus-visible,
+    body[data-theme="light"] select:focus-visible {
+      outline: 3px solid rgba(22,115,230,.38);
+      outline-offset: 2px;
+    }
+    body[data-theme="light"] .bg-amber-400,
+    body[data-theme="light"] .bg-amber-500 { background-color: #1673e6 !important; color: #fffdf8 !important; }
+    body[data-theme="light"] .text-amber-300,
+    body[data-theme="light"] .text-amber-400,
+    body[data-theme="light"] .text-amber-500 { color: #9b6a13 !important; }
+
+    body[data-theme="dark"] { background: #07090e; color: #f8fafc; }
     .custom-scroll::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -144,12 +224,12 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black antialiased custom-scroll">
+<body data-theme="light" class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black antialiased custom-scroll">
   <canvas id="ambient-canvas" aria-hidden="true"></canvas>
 
   <header class="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-xl border-b border-white/10">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="app.navTo('dashboard')">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
+      <div class="w-full sm:w-auto flex items-center gap-3 cursor-pointer" onclick="app.navTo('dashboard')">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center font-black text-gray-950 text-lg shadow-lg shadow-amber-500/20">
           CA
         </div>
@@ -169,8 +249,13 @@
       </div>
 
       <!-- Quick Stats, Accessibility & Memory Bank Indicators -->
-      <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
-        <div class="flex items-center gap-2 bg-gray-950/95 px-2 py-1.5 rounded-xl border border-gray-700 shadow-lg" aria-label="Reading accessibility controls">
+      <div class="w-full sm:w-auto flex items-center gap-2 sm:gap-3 justify-start sm:justify-end overflow-x-auto pb-1 sm:pb-0">
+        <div class="shrink-0 flex items-center gap-2 bg-gray-950/95 px-2 py-1.5 rounded-xl border border-gray-700 shadow-lg" aria-label="Reading accessibility controls">
+          <label for="theme-select" class="hidden md:inline text-[10px] uppercase tracking-wider text-amber-300 font-bold">Theme</label>
+          <select id="theme-select" onchange="app.setTheme(this.value)" class="accessibility-select" title="Choose visual theme">
+            <option value="light">Clean Light</option>
+            <option value="dark">Dark Focus</option>
+          </select>
           <label for="font-select" class="hidden md:inline text-[10px] uppercase tracking-wider text-amber-300 font-bold">Font</label>
           <select id="font-select" onchange="app.setFont(this.value)" class="accessibility-select" title="Choose an easy-to-read font">
             <option value="neue">Neue Clean</option>
@@ -216,20 +301,20 @@
   <main class="relative z-10 max-w-6xl mx-auto px-4 py-6 w-full flex-1">
 
     <!-- VIEW 1: ONBOARDING INTAKE SURVEY -->
-    <div id="view-onboarding" class="hidden max-w-xl mx-auto space-y-6 pt-4">
-      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+    <div id="view-onboarding" class="hidden w-full max-w-xl mx-auto space-y-6 pt-4">
+      <div class="w-full bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
         <div class="absolute -top-12 -right-12 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="flex items-center gap-2 text-amber-400 font-mono text-xs uppercase tracking-wider mb-2">
+        <div class="flex flex-wrap items-center gap-2 text-amber-400 font-mono text-xs uppercase tracking-wider mb-2">
           <span>🚨 Emergency Protocol</span>
           <span>•</span>
           <span>DRE Salesperson Exam</span>
         </div>
         <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          CALIFORNIA REAL ESTATE IN 72 HOURS.
+          CALIFORNIA REAL ESTATE<br>IN 72 HOURS.
         </h1>
         <p class="text-sm text-gray-400 mt-2">
-          You do not need another course. You need to know what matters, what you do not know, and what to do next. The California salesperson exam is <strong>150 questions, 3 hours, 70% to pass</strong>.
+          You do not need another course. You need a plan, a diagnostic, and the next best study action. <strong>150 questions • 3 hours • 70% to pass</strong>.
         </p>
 
         <form id="onboarding-form" onsubmit="app.handleOnboardingSubmit(event)" class="mt-6 space-y-5">
@@ -238,7 +323,7 @@
             <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
               1. Time Left Until Test Time:
             </label>
-            <div class="grid grid-cols-3 gap-2">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <label class="cursor-pointer">
                 <input type="radio" name="hoursLeft" value="24" class="peer sr-only" required>
                 <div class="p-3 text-center rounded-xl bg-gray-950 border border-gray-800 peer-checked:border-rose-500 peer-checked:bg-rose-950/30 text-xs font-medium text-gray-300 peer-checked:text-rose-300 transition">
@@ -1072,7 +1157,8 @@
           targetHours: 72,
           settings: {
             font: "neue",
-            textScale: "lg"
+            textScale: "lg",
+            theme: "light"
           }
         };
 
@@ -1117,11 +1203,15 @@
       }
 
       applyAccessibilitySettings() {
-        const settings = this.state.settings || { font: "neue", textScale: "lg" };
+        const settings = this.state.settings || { font: "neue", textScale: "lg", theme: "light" };
         const scaleMap = { sm: "16px", lg: "18px", xl: "20px" };
 
+        document.body.dataset.theme = settings.theme || "light";
         document.body.dataset.font = settings.font || "neue";
         document.documentElement.style.setProperty("--cram-base-size", scaleMap[settings.textScale] || scaleMap.lg);
+
+        const themeSelect = document.getElementById("theme-select");
+        if (themeSelect) themeSelect.value = settings.theme || "light";
 
         const fontSelect = document.getElementById("font-select");
         if (fontSelect) fontSelect.value = settings.font || "neue";
@@ -1132,6 +1222,12 @@
           const active = (settings.textScale || "lg") === size;
           btn.className = `accessibility-button px-2 rounded-lg font-black border transition ${size === "sm" ? "text-xs" : size === "lg" ? "text-sm" : "text-base"} ${active ? "bg-amber-500 text-gray-950 border-amber-400" : "bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700"}`;
         });
+      }
+
+      setTheme(theme) {
+        this.state.settings = { ...(this.state.settings || {}), theme };
+        this.saveState();
+        this.applyAccessibilitySettings();
       }
 
       setFont(font) {

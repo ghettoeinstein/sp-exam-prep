@@ -1,4 +1,4 @@
-const CACHE_NAME = "sp72-v1";
+const CACHE_NAME = "sp72-v2";
 const BASE = "/sp-exam-prep/";
 const ASSETS = [
   BASE,
