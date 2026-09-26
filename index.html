@@ -260,7 +260,7 @@
 
       <!-- Quick Stats, Accessibility & Memory Bank Indicators -->
       <div class="w-full sm:w-auto flex items-center gap-2 sm:gap-3 justify-start sm:justify-end overflow-x-auto pb-1 sm:pb-0">
-        <div class="shrink-0 flex items-center gap-2 bg-gray-950/95 px-2 py-1.5 rounded-xl border border-gray-700 shadow-lg" aria-label="Reading accessibility controls">
+        <div class="order-last shrink-0 flex items-center gap-2 bg-gray-950/95 px-2 py-1.5 rounded-xl border border-gray-700 shadow-lg" aria-label="Reading accessibility controls">
           <label for="theme-select" class="hidden md:inline text-[10px] uppercase tracking-wider text-amber-300 font-bold">Theme</label>
           <select id="theme-select" onchange="app.setTheme(this.value)" class="accessibility-select" title="Choose visual theme">
             <option value="light">Clean Light</option>
@@ -298,9 +298,13 @@
           </span>
         </div>
 
-        <div id="scorekeeper-pill" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-950 border border-gray-800 text-gray-200 tabular" title="Local scorekeeper: stored only on this device">
+        <div id="scorekeeper-pill" style="order:-2" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-950 border border-gray-800 text-gray-200 tabular" title="Local scorekeeper: stored only on this device">
           0 XP · 0🔥
         </div>
+        <button onclick="app.openCartridgeModal()" id="cartridge-header-btn" style="order:-3" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-black bg-gradient-to-r from-amber-400 to-amber-600 text-white border border-amber-500 shadow-lg shadow-amber-500/20 transition hover:scale-[1.02] tabular" title="Memory Card save slots">
+          🔓 <span class="hidden lg:inline" id="cartridge-header-label">Slot 1: Active</span>
+        </button>
+        <button onclick="app.openInstallModal()" style="order:-1" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-950 border border-gray-800 text-gray-200 transition" title="Add SP72 to Home Screen">＋Home</button>
         <button onclick="app.navTo('dashboard')" id="nav-btn-home" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-200 transition">
           Mission
         </button>
@@ -804,6 +808,58 @@
     </div>
   </div>
 
+  <div id="modal-cartridge" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white border border-gray-200 rounded-[2rem] max-w-4xl w-full max-h-[90dvh] overflow-y-auto p-5 sm:p-6 shadow-2xl text-black">
+      <div class="flex items-start justify-between gap-4 pb-4 border-b border-gray-200">
+        <div>
+          <h3 class="text-lg font-black tracking-tight">🟡 Unlock / Save State</h3>
+          <p class="text-sm text-gray-600">Private by design • No account required • Stored on this device</p>
+        </div>
+        <button onclick="app.closeCartridgeModal()" class="w-10 h-10 rounded-full border border-gray-200 hover:bg-gray-100 font-black">✕</button>
+      </div>
+
+      <div id="cartridge-slots" class="grid grid-cols-1 md:grid-cols-3 gap-4 py-5"></div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-gray-200 pt-4">
+        <button onclick="app.exportAllSlots()" class="py-3 px-4 rounded-2xl bg-black text-white font-bold text-sm">💾 Export All Slots</button>
+        <button onclick="app.importCartridgePrompt()" class="py-3 px-4 rounded-2xl bg-white border border-gray-300 text-black font-bold text-sm">📥 Import Cartridge</button>
+      </div>
+
+      <div id="cartridge-notice" class="hidden mt-4 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold"></div>
+    </div>
+  </div>
+
+  <div id="modal-pin" class="hidden fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white border border-gray-200 rounded-[2rem] max-w-sm w-full p-6 shadow-2xl text-black text-center">
+      <h3 id="pin-title" class="text-lg font-black">Enter 4-Digit PIN</h3>
+      <p id="pin-desc" class="mt-1 text-sm text-gray-600">Unlock this memory cartridge.</p>
+      <input id="pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" class="mt-5 w-full text-center text-3xl tracking-[0.45em] font-black rounded-2xl border border-gray-300 p-4 focus:outline-none focus:ring-4 focus:ring-amber-200" placeholder="••••">
+      <div class="mt-5 grid grid-cols-2 gap-3">
+        <button onclick="app.cancelPinPrompt()" class="py-3 rounded-2xl border border-gray-300 font-bold">Cancel</button>
+        <button onclick="app.submitPinPrompt()" class="py-3 rounded-2xl bg-black text-white font-bold">Continue</button>
+      </div>
+      <div id="pin-error" class="hidden mt-3 text-sm text-rose-600 font-bold">Incorrect PIN.</div>
+    </div>
+  </div>
+
+  <div id="modal-install" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white border border-gray-200 rounded-[2rem] max-w-md w-full p-6 shadow-2xl text-black">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h3 class="text-xl font-black">Add SP72 to Home Screen</h3>
+          <p class="mt-1 text-sm text-gray-600">Install the cram engine like an app. It works offline after first load and keeps your Memory Card local.</p>
+        </div>
+        <button onclick="app.closeInstallModal()" class="w-10 h-10 rounded-full border border-gray-200 hover:bg-gray-100 font-black">✕</button>
+      </div>
+      <div class="mt-5 space-y-3 text-sm text-gray-700">
+        <div class="p-3 rounded-2xl bg-gray-50 border border-gray-200"><strong>iPhone Safari:</strong> tap Share → Add to Home Screen.</div>
+        <div class="p-3 rounded-2xl bg-gray-50 border border-gray-200"><strong>Android / Chrome:</strong> tap Install below or browser menu → Add to Home screen.</div>
+        <div class="p-3 rounded-2xl bg-gray-50 border border-gray-200"><strong>Desktop:</strong> use the install icon in your address bar when available.</div>
+      </div>
+      <button id="install-native-btn" onclick="app.installPwa()" class="mt-5 w-full py-3 rounded-2xl bg-black text-white font-black">Install SP72</button>
+    </div>
+  </div>
+
   <footer class="border-t border-gray-900 bg-gray-950/60 py-4 text-center text-[11px] text-gray-600">
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
       <div>CA DRE Salesperson Examination Cram Companion • Pass Benchmark: 70%</div>
@@ -1139,6 +1195,8 @@
 
   <script>
     const STORAGE_KEY = "ca_re_cram_engine_v1";
+    const CARTRIDGE_KEY = "sp72_memory_cartridges_v1";
+    const ACTIVE_SLOT_KEY = "sp72_active_cartridge_slot";
 
     class CramEngine {
       constructor() {
@@ -1150,6 +1208,9 @@
         this.secondsRemaining = 0;
         this.currentCardIndex = 0;
         this.cardFlipped = false;
+        this.cartridges = null;
+        this.activeSlotId = Number(localStorage.getItem(ACTIVE_SLOT_KEY) || 1);
+        this.pendingPinAction = null;
       }
 
       loadState() {
@@ -1212,10 +1273,12 @@
         } catch (e) {
           console.error("Error saving state", e);
         }
+        this.autosaveActiveCartridge();
         this.updateHeaderMetrics();
       }
 
       init() {
+        this.initCartridges();
         this.applyAccessibilitySettings();
         this.startAmbientCanvas();
         this.updateHeaderMetrics();
@@ -1227,6 +1290,117 @@
         } else {
           this.navTo("dashboard");
         }
+      }
+
+      initCartridges() {
+        try {
+          this.cartridges = JSON.parse(localStorage.getItem(CARTRIDGE_KEY) || "null");
+        } catch (e) {
+          this.cartridges = null;
+        }
+        if (!this.cartridges || !Array.isArray(this.cartridges.slots)) {
+          this.cartridges = {
+            version: "1.0",
+            activeSlotId: this.activeSlotId || 1,
+            slots: [1, 2, 3].map(id => ({ id, name: `Cartridge ${String.fromCharCode(64 + id)}`, locked: false, created: id === 1, updatedAt: 0, payload: null }))
+          };
+        }
+        this.activeSlotId = this.cartridges.activeSlotId || this.activeSlotId || 1;
+        const active = this.getActiveSlot();
+        if (active && !active.created) {
+          active.created = true;
+          active.payload = this.buildCartridgePayload();
+          active.updatedAt = Date.now();
+        }
+        this.persistCartridgeIndex();
+        if (this.getActiveSlot()?.payload) {
+          const activePayload = this.getActiveSlot().payload;
+          if (!this.getActiveSlot().locked && activePayload?.payload) {
+            this.state = { ...this.state, ...activePayload.payload };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+          }
+        }
+      }
+
+      persistCartridgeIndex() {
+        this.cartridges.activeSlotId = this.activeSlotId;
+        localStorage.setItem(ACTIVE_SLOT_KEY, String(this.activeSlotId));
+        localStorage.setItem(CARTRIDGE_KEY, JSON.stringify(this.cartridges));
+      }
+
+      getActiveSlot() {
+        return this.cartridges?.slots?.find(s => s.id === this.activeSlotId) || null;
+      }
+
+      buildCartridgePayload() {
+        const attempted = this.state.history?.totalAttempted || 0;
+        const totalPool = Math.max(150, QUESTION_BANK.length);
+        return {
+          cartridge_version: "1.0",
+          slot_id: this.activeSlotId,
+          slot_name: this.getActiveSlot()?.name || `Cartridge ${this.activeSlotId}`,
+          is_locked: !!this.getActiveSlot()?.locked,
+          last_saved_timestamp: Date.now(),
+          payload: {
+            ...this.state,
+            selected_exam_mode: this.state.profile?.hoursLeft ? `${this.state.profile.hoursLeft}h` : "72h",
+            progress_percent: Math.min(100, Math.round((attempted / totalPool) * 100)),
+            xp: this.state.scoreKeeper?.xp || 0,
+            timer_seconds_remaining: Math.round(this.getHoursRemaining() * 3600),
+            theme: this.state.settings?.theme || "light",
+            font: this.state.settings?.font || "neue"
+          }
+        };
+      }
+
+      autosaveActiveCartridge() {
+        if (!this.cartridges) return;
+        const slot = this.getActiveSlot();
+        if (!slot || !slot.created || slot.locked) return;
+        slot.payload = this.buildCartridgePayload();
+        slot.updatedAt = Date.now();
+        this.persistCartridgeIndex();
+      }
+
+      async digestPin(pin, saltB64) {
+        const enc = new TextEncoder();
+        const salt = saltB64 ? this.b64ToBytes(saltB64) : crypto.getRandomValues(new Uint8Array(16));
+        const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(pin), "PBKDF2", false, ["deriveBits", "deriveKey"]);
+        const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", salt, iterations: 120000, hash: "SHA-256" }, keyMaterial, 256);
+        const hash = await crypto.subtle.digest("SHA-256", bits);
+        return { hash: this.bytesToB64(new Uint8Array(hash)), salt: this.bytesToB64(salt), keyMaterial };
+      }
+
+      async deriveAesKey(pin, saltB64) {
+        const enc = new TextEncoder();
+        const salt = this.b64ToBytes(saltB64);
+        const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(pin), "PBKDF2", false, ["deriveKey"]);
+        return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 120000, hash: "SHA-256" }, keyMaterial, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+      }
+
+      async encryptWithPin(obj, pin) {
+        const { hash, salt } = await this.digestPin(pin);
+        const key = await this.deriveAesKey(pin, salt);
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const data = new TextEncoder().encode(JSON.stringify(obj));
+        const cipher = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, data);
+        return { pin_hash: hash, salt, iv: this.bytesToB64(iv), encrypted: this.bytesToB64(new Uint8Array(cipher)) };
+      }
+
+      async decryptWithPin(slot, pin) {
+        const { hash } = await this.digestPin(pin, slot.salt);
+        if (hash !== slot.pin_hash) throw new Error("Incorrect PIN");
+        const key = await this.deriveAesKey(pin, slot.salt);
+        const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: this.b64ToBytes(slot.iv) }, key, this.b64ToBytes(slot.encrypted));
+        return JSON.parse(new TextDecoder().decode(plain));
+      }
+
+      bytesToB64(bytes) {
+        return btoa(String.fromCharCode(...bytes));
+      }
+
+      b64ToBytes(b64) {
+        return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
       }
 
       applyAccessibilitySettings() {
@@ -1354,6 +1528,15 @@
           const sk = this.state.scoreKeeper || { xp: 0, streak: 0 };
           scorePill.textContent = `${sk.xp || 0} XP · ${sk.streak || 0}🔥`;
         }
+
+        const cartridgeBtn = document.getElementById("cartridge-header-btn");
+        const cartridgeLabel = document.getElementById("cartridge-header-label");
+        const slot = this.getActiveSlot();
+        if (cartridgeBtn && slot) {
+          cartridgeBtn.firstChild.textContent = slot.locked ? "🔒 " : "🔓 ";
+          cartridgeBtn.title = `Slot ${slot.id}: ${slot.locked ? "Locked" : "Active autosave"}`;
+        }
+        if (cartridgeLabel && slot) cartridgeLabel.textContent = `Slot ${slot.id}: ${slot.locked ? "Locked" : "Active"}`;
 
         const tierTag = document.getElementById("header-tier-tag");
         if (this.state.profile && this.state.profile.assignedTier) {
@@ -2009,6 +2192,231 @@
         this.renderFlashcard();
       }
 
+      openCartridgeModal() {
+        this.renderCartridgeSlots();
+        document.getElementById("modal-cartridge").classList.remove("hidden");
+      }
+
+      closeCartridgeModal() {
+        document.getElementById("modal-cartridge").classList.add("hidden");
+      }
+
+      showCartridgeNotice(msg) {
+        const el = document.getElementById("cartridge-notice");
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.remove("hidden");
+        setTimeout(() => el.classList.add("hidden"), 3000);
+      }
+
+      renderCartridgeSlots() {
+        const container = document.getElementById("cartridge-slots");
+        if (!container) return;
+        container.innerHTML = "";
+        this.cartridges.slots.forEach(slot => {
+          const active = slot.id === this.activeSlotId;
+          const payload = slot.payload?.payload || {};
+          const sk = payload.scoreKeeper || {};
+          const progress = slot.payload?.payload?.progress_percent || payload.history?.totalAttempted || 0;
+          const hours = payload.profile?.hoursLeft ? `${payload.profile.hoursLeft}h Plan` : "No plan yet";
+          const updated = slot.updatedAt ? this.timeAgo(slot.updatedAt) : "Never";
+          const div = document.createElement("div");
+          div.className = `rounded-[1.5rem] border p-4 ${active ? "border-amber-400 bg-amber-50" : "border-gray-200 bg-white"}`;
+          div.innerHTML = `
+            <div class="flex items-center justify-between gap-2">
+              <strong class="text-sm">SLOT ${slot.id}: ${slot.name}</strong>
+              <span class="text-lg">${slot.locked ? "🔒" : active ? "🔓" : "💾"}</span>
+            </div>
+            <div class="mt-3 space-y-1 text-xs text-gray-600">
+              <div>Status: <b class="text-black">${slot.created ? (active ? "ACTIVE (AUTO-SAVE)" : slot.locked ? "LOCKED" : "SAVED") : "EMPTY"}</b></div>
+              <div>Exam: ${hours}</div>
+              <div>Progress: ${progress}${typeof progress === "number" && progress <= 100 ? "%" : " questions"}</div>
+              <div>XP: ${sk.xp || payload.xp || 0} XP</div>
+              <div>Last Saved: ${updated}</div>
+            </div>
+            <div class="mt-4 grid grid-cols-2 gap-2">
+              <button data-action="switch" class="py-2 rounded-xl bg-black text-white text-xs font-bold">${slot.created ? "Load" : "Create"}</button>
+              <button data-action="lock" class="py-2 rounded-xl border border-gray-300 text-xs font-bold">${slot.locked ? "Unlock" : "Lock"}</button>
+              <button data-action="export" class="py-2 rounded-xl border border-gray-300 text-xs font-bold">Backup Code</button>
+              <button data-action="delete" class="py-2 rounded-xl border border-rose-200 text-rose-700 text-xs font-bold">Delete</button>
+            </div>`;
+          div.querySelector('[data-action="switch"]').onclick = () => this.switchCartridge(slot.id);
+          div.querySelector('[data-action="lock"]').onclick = () => slot.locked ? this.unlockCartridge(slot.id) : this.lockCartridge(slot.id);
+          div.querySelector('[data-action="export"]').onclick = () => this.exportCartridge(slot.id);
+          div.querySelector('[data-action="delete"]').onclick = () => this.deleteCartridge(slot.id);
+          container.appendChild(div);
+        });
+      }
+
+      timeAgo(ts) {
+        const s = Math.max(1, Math.floor((Date.now() - ts) / 1000));
+        if (s < 60) return "Just now";
+        if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+        if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+        return `${Math.floor(s / 86400)}d ago`;
+      }
+
+      promptPin(title, desc) {
+        return new Promise(resolve => {
+          this.pendingPinAction = resolve;
+          document.getElementById("pin-title").textContent = title;
+          document.getElementById("pin-desc").textContent = desc;
+          document.getElementById("pin-error").classList.add("hidden");
+          const input = document.getElementById("pin-input");
+          input.value = "";
+          document.getElementById("modal-pin").classList.remove("hidden");
+          setTimeout(() => input.focus(), 50);
+        });
+      }
+
+      submitPinPrompt() {
+        const input = document.getElementById("pin-input");
+        const pin = (input.value || "").replace(/\D/g, "").slice(0, 4);
+        if (pin.length !== 4) {
+          document.getElementById("pin-error").textContent = "Enter exactly 4 digits.";
+          document.getElementById("pin-error").classList.remove("hidden");
+          return;
+        }
+        document.getElementById("modal-pin").classList.add("hidden");
+        const resolve = this.pendingPinAction;
+        this.pendingPinAction = null;
+        if (resolve) resolve(pin);
+      }
+
+      cancelPinPrompt() {
+        document.getElementById("modal-pin").classList.add("hidden");
+        const resolve = this.pendingPinAction;
+        this.pendingPinAction = null;
+        if (resolve) resolve(null);
+      }
+
+      async switchCartridge(id) {
+        const slot = this.cartridges.slots.find(s => s.id === id);
+        if (!slot.created) {
+          slot.created = true;
+          slot.locked = false;
+          this.activeSlotId = id;
+          slot.payload = this.buildCartridgePayload();
+          slot.updatedAt = Date.now();
+          this.persistCartridgeIndex();
+          this.renderCartridgeSlots();
+          this.updateHeaderMetrics();
+          return;
+        }
+        let cartridge = slot.payload;
+        if (slot.locked) {
+          const pin = await this.promptPin("Enter 4-Digit PIN", `Unlock Slot ${id} to load it.`);
+          if (!pin) return;
+          try { cartridge = await this.decryptWithPin(slot, pin); }
+          catch { alert("Incorrect PIN or corrupted cartridge."); return; }
+        }
+        if (cartridge?.payload) {
+          this.activeSlotId = id;
+          this.state = { ...this.loadState(), ...cartridge.payload };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+          this.persistCartridgeIndex();
+          this.applyAccessibilitySettings();
+          this.updateHeaderMetrics();
+          this.renderCartridgeSlots();
+          this.navTo(this.state.profile?.diagnosticCompleted ? "dashboard" : "onboarding");
+        }
+      }
+
+      async lockCartridge(id) {
+        const slot = this.cartridges.slots.find(s => s.id === id);
+        if (!slot.created) return alert("Create the slot before locking it.");
+        const pin = await this.promptPin("Create 4-Digit PIN", `Lock Slot ${id}. You will need this PIN to load, overwrite, or delete it.`);
+        if (!pin) return;
+        const payload = id === this.activeSlotId ? this.buildCartridgePayload() : slot.payload;
+        const encrypted = await this.encryptWithPin(payload, pin);
+        Object.assign(slot, encrypted, { locked: true, payload: null, updatedAt: Date.now() });
+        this.persistCartridgeIndex();
+        this.renderCartridgeSlots();
+        this.updateHeaderMetrics();
+      }
+
+      async unlockCartridge(id) {
+        const slot = this.cartridges.slots.find(s => s.id === id);
+        const pin = await this.promptPin("Unlock Cartridge", `Enter PIN for Slot ${id}.`);
+        if (!pin) return;
+        try {
+          slot.payload = await this.decryptWithPin(slot, pin);
+          slot.locked = false;
+          delete slot.encrypted; delete slot.iv; delete slot.salt; delete slot.pin_hash;
+          slot.updatedAt = Date.now();
+          this.persistCartridgeIndex();
+          this.renderCartridgeSlots();
+          this.updateHeaderMetrics();
+        } catch { alert("Incorrect PIN."); }
+      }
+
+      async deleteCartridge(id) {
+        const slot = this.cartridges.slots.find(s => s.id === id);
+        if (!slot.created) return;
+        if (slot.locked) {
+          const pin = await this.promptPin("Confirm PIN", `PIN required to delete Slot ${id}.`);
+          if (!pin) return;
+          try { await this.decryptWithPin(slot, pin); } catch { alert("Incorrect PIN."); return; }
+        }
+        if (!confirm(`Delete Slot ${id}?`)) return;
+        Object.keys(slot).forEach(k => delete slot[k]);
+        Object.assign(slot, { id, name: `Cartridge ${String.fromCharCode(64 + id)}`, locked: false, created: false, updatedAt: 0, payload: null });
+        if (this.activeSlotId === id) this.activeSlotId = 1;
+        this.persistCartridgeIndex();
+        this.renderCartridgeSlots();
+        this.updateHeaderMetrics();
+      }
+
+      exportCartridge(id) {
+        const slot = this.cartridges.slots.find(s => s.id === id);
+        if (!slot?.created) return alert("Empty slot.");
+        const code = btoa(unescape(encodeURIComponent(JSON.stringify({ type: "sp72-cartridge", slot }))));
+        navigator.clipboard?.writeText(code).then(() => this.showCartridgeNotice("✓ Cartridge backup code copied."));
+      }
+
+      exportAllSlots() {
+        const code = btoa(unescape(encodeURIComponent(JSON.stringify({ type: "sp72-all-cartridges", cartridges: this.cartridges }))));
+        navigator.clipboard?.writeText(code).then(() => this.showCartridgeNotice("✓ All cartridge slots copied."));
+      }
+
+      importCartridgePrompt() {
+        const code = prompt("Paste SP72 cartridge code:");
+        if (!code) return;
+        try {
+          const parsed = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+          if (parsed.type === "sp72-cartridge" && parsed.slot) {
+            const target = this.cartridges.slots.find(s => s.id === parsed.slot.id) || this.cartridges.slots[0];
+            Object.assign(target, parsed.slot, { id: target.id });
+          } else if (parsed.type === "sp72-all-cartridges" && parsed.cartridges?.slots) {
+            this.cartridges = parsed.cartridges;
+          } else throw new Error("Invalid code");
+          this.persistCartridgeIndex();
+          this.renderCartridgeSlots();
+          this.showCartridgeNotice("✓ Cartridge imported. Load a slot to resume.");
+        } catch (e) {
+          alert("Invalid cartridge code.");
+        }
+      }
+
+      openInstallModal() {
+        document.getElementById("modal-install").classList.remove("hidden");
+      }
+
+      closeInstallModal() {
+        document.getElementById("modal-install").classList.add("hidden");
+      }
+
+      async installPwa() {
+        if (window.sp72DeferredInstallPrompt) {
+          window.sp72DeferredInstallPrompt.prompt();
+          await window.sp72DeferredInstallPrompt.userChoice;
+          window.sp72DeferredInstallPrompt = null;
+          this.closeInstallModal();
+        } else {
+          alert("If your browser does not show an install prompt, use Share/Menu → Add to Home Screen.");
+        }
+      }
+
       showResetModal() {
         document.getElementById("modal-settings").classList.remove("hidden");
       }
@@ -2053,6 +2461,11 @@
 
     // Initialize global app instance on DOM load
     let app;
+    window.addEventListener("beforeinstallprompt", event => {
+      event.preventDefault();
+      window.sp72DeferredInstallPrompt = event;
+    });
+
     window.addEventListener("DOMContentLoaded", () => {
       app = new CramEngine();
       app.init();
