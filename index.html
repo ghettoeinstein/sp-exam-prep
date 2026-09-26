@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>SP72 — California Real Estate Exam Prep</title>
   <meta name="theme-color" content="#FFFFFF">
   <link rel="manifest" href="./manifest.webmanifest">
@@ -2471,8 +2474,16 @@
       app.init();
 
       if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("./sw.js").catch(() => {
+        navigator.serviceWorker.register("./sw.js?v=5").then(reg => {
+          reg.update();
+        }).catch(() => {
           // GitHub Pages-safe progressive enhancement; studying still works if SW is unavailable.
+        });
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+          if (refreshing) return;
+          refreshing = true;
+          window.location.reload();
         });
       }
     });
