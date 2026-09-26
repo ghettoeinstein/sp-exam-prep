@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SP72 — California Real Estate Exam Prep</title>
-  <meta name="theme-color" content="#11100E">
+  <meta name="theme-color" content="#FFFFFF">
   <link rel="manifest" href="./manifest.webmanifest">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,10 +119,10 @@
       body { min-height: 100dvh; }
     }
 
-    /* SP72 default theme: FreeCreditBot-style light, calm, useful, no dark AI chrome. */
+    /* SP72 default theme: white/black, calm, useful, no dark AI chrome. */
     body[data-theme="light"] {
-      background: #f7f4ed;
-      color: #11100e;
+      background: #ffffff;
+      color: #050505;
       overflow-x: hidden;
     }
     body[data-theme="light"] #ambient-canvas { display: none; }
@@ -134,10 +134,10 @@
     body[data-theme="light"] [class*="bg-gray-900"],
     body[data-theme="light"] [class*="bg-gray-950"],
     body[data-theme="light"] [class*="bg-gray-800"] {
-      background: rgba(255, 253, 248, 0.92) !important;
-      border-color: #e6dccb !important;
-      color: #11100e !important;
-      box-shadow: 0 14px 40px rgba(49, 36, 20, 0.08), inset 0 1px 0 rgba(255,255,255,.85) !important;
+      background: rgba(255, 255, 255, 0.94) !important;
+      border-color: #e5e7eb !important;
+      color: #050505 !important;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.07), inset 0 1px 0 rgba(255,255,255,.95) !important;
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
     }
@@ -148,36 +148,36 @@
       z-index: -1;
       pointer-events: none;
       background:
-        radial-gradient(circle at 12% 8%, rgba(217,164,65,.20), transparent 32%),
-        radial-gradient(circle at 88% 0%, rgba(22,115,230,.10), transparent 30%),
-        linear-gradient(180deg, #fffdf8 0%, #f7f4ed 58%, #efe6d7 100%);
+        radial-gradient(circle at 12% 8%, rgba(0,0,0,.035), transparent 32%),
+        radial-gradient(circle at 88% 0%, rgba(22,115,230,.08), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, #fafafa 58%, #f3f4f6 100%);
     }
     body[data-theme="light"] .text-white,
     body[data-theme="light"] .text-gray-100,
     body[data-theme="light"] .text-gray-200,
-    body[data-theme="light"] .text-gray-300 { color: #11100e !important; }
+    body[data-theme="light"] .text-gray-300 { color: #050505 !important; }
     body[data-theme="light"] .text-gray-400,
-    body[data-theme="light"] .text-gray-500 { color: #675f54 !important; }
+    body[data-theme="light"] .text-gray-500 { color: #525252 !important; }
     body[data-theme="light"] .text-gray-600,
-    body[data-theme="light"] .text-gray-700 { color: #8a7f70 !important; }
+    body[data-theme="light"] .text-gray-700 { color: #737373 !important; }
     body[data-theme="light"] .border-gray-800,
     body[data-theme="light"] .border-gray-700,
-    body[data-theme="light"] .border-white\/10 { border-color: #e6dccb !important; }
+    body[data-theme="light"] .border-white\/10 { border-color: #e5e7eb !important; }
     body[data-theme="light"] .bg-white\/\[\.045\],
     body[data-theme="light"] .bg-white\/5,
     body[data-theme="light"] .bg-black\/30 { background: rgba(255,255,255,.62) !important; }
     body[data-theme="light"] .option-card {
-      background: #fffdf8 !important;
-      border-color: #e2d6c4 !important;
-      color: #11100e !important;
+      background: #ffffff !important;
+      border-color: #e5e7eb !important;
+      color: #050505 !important;
     }
     body[data-theme="light"] .option-card:hover { border-color: #1673e6 !important; box-shadow: 0 12px 30px rgba(22,115,230,.10) !important; }
     body[data-theme="light"] .accessibility-select,
     body[data-theme="light"] select,
     body[data-theme="light"] input {
-      background: #fffdf8 !important;
-      border-color: #d8cbb7 !important;
-      color: #11100e !important;
+      background: #ffffff !important;
+      border-color: #d1d5db !important;
+      color: #050505 !important;
     }
     body[data-theme="light"] button:focus-visible,
     body[data-theme="light"] a:focus-visible,
@@ -186,10 +186,20 @@
       outline-offset: 2px;
     }
     body[data-theme="light"] .bg-amber-400,
-    body[data-theme="light"] .bg-amber-500 { background-color: #1673e6 !important; color: #fffdf8 !important; }
+    body[data-theme="light"] .bg-amber-500 { background-color: #050505 !important; color: #ffffff !important; }
     body[data-theme="light"] .text-amber-300,
     body[data-theme="light"] .text-amber-400,
-    body[data-theme="light"] .text-amber-500 { color: #9b6a13 !important; }
+    body[data-theme="light"] .text-amber-500 { color: #050505 !important; }
+
+    .score-pop { animation: scorePop .42s cubic-bezier(.2,.8,.2,1); }
+    @keyframes scorePop { 0% { transform: scale(.96); } 45% { transform: scale(1.05); } 100% { transform: scale(1); } }
+    .correct-glow { animation: correctGlow .7s ease; }
+    .miss-shake { animation: missShake .35s ease; }
+    @keyframes correctGlow { 0% { box-shadow: 0 0 0 rgba(16,185,129,0); } 45% { box-shadow: 0 0 0 8px rgba(16,185,129,.14); } 100% { box-shadow: 0 0 0 rgba(16,185,129,0); } }
+    @keyframes missShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+    @media (prefers-reduced-motion: reduce) {
+      .score-pop, .correct-glow, .miss-shake { animation: none !important; }
+    }
 
     body[data-theme="dark"] { background: #07090e; color: #f8fafc; }
     .custom-scroll::-webkit-scrollbar {
@@ -288,6 +298,9 @@
           </span>
         </div>
 
+        <div id="scorekeeper-pill" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-950 border border-gray-800 text-gray-200 tabular" title="Local scorekeeper: stored only on this device">
+          0 XP · 0🔥
+        </div>
         <button onclick="app.navTo('dashboard')" id="nav-btn-home" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-200 transition">
           Mission
         </button>
@@ -307,8 +320,8 @@
 
         <div class="flex flex-wrap items-center gap-2 text-amber-400 font-mono text-xs uppercase tracking-wider mb-2">
           <span>🚨 Emergency Protocol</span>
-          <span>•</span>
-          <span>DRE Salesperson Exam</span>
+          <span class="hidden sm:inline">•</span>
+          <span class="block w-full sm:w-auto">DRE Salesperson Exam</span>
         </div>
         <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           CALIFORNIA REAL ESTATE<br>IN 72 HOURS.
@@ -439,9 +452,16 @@
           <span class="px-2 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">High-yield recall</span>
         </div>
 
-        <h2 id="quiz-question-text" class="question-title text-white mb-6">
+        <h2 id="quiz-question-text" class="question-title text-white mb-4">
           Under California law, in which of the following real estate transactions is the seller strictly exempt from delivering the statutory Transfer Disclosure Statement (TDS)?
         </h2>
+
+        <div class="mb-5">
+          <button type="button" id="quiz-hint-btn" onclick="app.toggleHint()" class="px-3 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-bold transition hover:bg-cyan-500/15">
+            💡 Show deterministic hint
+          </button>
+          <div id="quiz-hint-box" class="hidden mt-3 p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-sm text-gray-300 leading-relaxed"></div>
+        </div>
 
         <!-- Options Container -->
         <div id="quiz-options-container" class="space-y-3">
@@ -1159,6 +1179,12 @@
             font: "neue",
             textScale: "lg",
             theme: "light"
+          },
+          scoreKeeper: {
+            xp: 0,
+            streak: 0,
+            bestStreak: 0,
+            loopsCompleted: 0
           }
         };
 
@@ -1170,6 +1196,7 @@
             ...defaultState,
             ...parsed,
             settings: { ...defaultState.settings, ...(parsed.settings || {}) },
+            scoreKeeper: { ...defaultState.scoreKeeper, ...(parsed.scoreKeeper || {}) },
             memoryBank: { ...defaultState.memoryBank, ...(parsed.memoryBank || {}) },
             history: { ...defaultState.history, ...(parsed.history || {}) }
           };
@@ -1322,6 +1349,12 @@
         document.getElementById("stat-b2").textContent = b2Count;
         document.getElementById("stat-b3").textContent = b3Count;
 
+        const scorePill = document.getElementById("scorekeeper-pill");
+        if (scorePill) {
+          const sk = this.state.scoreKeeper || { xp: 0, streak: 0 };
+          scorePill.textContent = `${sk.xp || 0} XP · ${sk.streak || 0}🔥`;
+        }
+
         const tierTag = document.getElementById("header-tier-tag");
         if (this.state.profile && this.state.profile.assignedTier) {
           tierTag.classList.remove("hidden");
@@ -1430,6 +1463,13 @@
         document.getElementById("quiz-question-counter").textContent = `${this.quizIndex + 1} / ${total}`;
         document.getElementById("quiz-law-ref").textContent = q.citation || "CA Real Estate Law";
         document.getElementById("quiz-question-text").textContent = q.question;
+        const hintBox = document.getElementById("quiz-hint-box");
+        if (hintBox) {
+          hintBox.classList.add("hidden");
+          hintBox.textContent = this.getDeterministicHint(q);
+        }
+        const hintBtn = document.getElementById("quiz-hint-btn");
+        if (hintBtn) hintBtn.textContent = "💡 Show deterministic hint";
         
         // Progress bar
         const pct = ((this.quizIndex) / total) * 100;
@@ -1494,6 +1534,28 @@
         }, 1000);
       }
 
+      getDeterministicHint(q) {
+        const hints = {
+          Disclosures: "Color code: gold = high-weight disclosure rule. Ask: is this about TDS, agency disclosure, death, defects, or material facts?",
+          Agency: "Color code: blue = duty question. Look for loyalty, disclosure, obedience, confidentiality, accounting, and reasonable care.",
+          Ownership: "Color code: black = title/rights. Identify the estate, vesting, encumbrance, or government power being tested.",
+          Valuation: "Color code: green = math/value. Write the formula first; do not solve from memory pressure.",
+          Contracts: "Color code: purple = enforceability. Check offer, acceptance, consideration, capacity, legality, consent, and writing.",
+          Financing: "Color code: teal = loan/security. Separate note, deed of trust, lien priority, and foreclosure concepts.",
+          Transfer: "Color code: orange = movement of title. Ask: deed delivery, escrow, probate/court order, or recording?"
+        };
+        return hints[q.category] || "Read the call of the question first, then eliminate two answers before choosing.";
+      }
+
+      toggleHint() {
+        const box = document.getElementById("quiz-hint-box");
+        const btn = document.getElementById("quiz-hint-btn");
+        if (!box) return;
+        const showing = !box.classList.contains("hidden");
+        box.classList.toggle("hidden", showing);
+        if (btn) btn.textContent = showing ? "💡 Show deterministic hint" : "Hide hint";
+      }
+
       getQuestionBoxLabel(qid) {
         if (this.state.memoryBank.box3.includes(qid)) return "Memory Box 3 (Mastered)";
         if (this.state.memoryBank.box2.includes(qid)) return "Memory Box 2 (Review)";
@@ -1513,8 +1575,9 @@
           isCorrect
         });
 
-        // Mutate Leitner Boxes deterministically
+        // Mutate Leitner Boxes + local scorekeeper deterministically
         this.updateLeitnerBox(q.id, isCorrect);
+        this.updateScoreKeeper(isCorrect, q);
 
         // Update overall history metrics
         this.state.history.totalAttempted++;
@@ -1534,9 +1597,9 @@
           buttons[i].disabled = true;
           buttons[i].classList.remove("hover:border-gray-700");
           if (i === q.correctIndex) {
-            buttons[i].className = "w-full text-left p-4 sm:p-5 rounded-2xl bg-emerald-950/70 border border-emerald-400 text-emerald-50 font-medium flex items-start gap-3 shadow-lg shadow-emerald-500/10";
+            buttons[i].className = "correct-glow w-full text-left p-4 sm:p-5 rounded-2xl bg-emerald-950/70 border border-emerald-400 text-emerald-50 font-medium flex items-start gap-3 shadow-lg shadow-emerald-500/10";
           } else if (i === selectedIndex && !isCorrect) {
-            buttons[i].className = "w-full text-left p-4 sm:p-5 rounded-2xl bg-rose-950/70 border border-rose-400 text-rose-50 font-medium flex items-start gap-3 shadow-lg shadow-rose-500/10";
+            buttons[i].className = "miss-shake w-full text-left p-4 sm:p-5 rounded-2xl bg-rose-950/70 border border-rose-400 text-rose-50 font-medium flex items-start gap-3 shadow-lg shadow-rose-500/10";
           } else {
             buttons[i].className = "w-full text-left p-4 sm:p-5 rounded-2xl bg-gray-950/30 border border-white/5 text-gray-500 font-medium flex items-start gap-3 opacity-60";
           }
@@ -1566,6 +1629,28 @@
         body.textContent = q.explanation;
         cit.textContent = `Statutory Reference: ${q.citation}`;
         expBox.classList.remove("hidden");
+      }
+
+      updateScoreKeeper(isCorrect, q) {
+        const sk = this.state.scoreKeeper || { xp: 0, streak: 0, bestStreak: 0, loopsCompleted: 0 };
+        const weightBonus = { Disclosures: 4, Agency: 3, Ownership: 3, Valuation: 3, Contracts: 2, Financing: 2, Transfer: 2 }[q.category] || 2;
+        if (isCorrect) {
+          sk.streak = (sk.streak || 0) + 1;
+          sk.bestStreak = Math.max(sk.bestStreak || 0, sk.streak);
+          sk.xp = (sk.xp || 0) + 10 + weightBonus + Math.min(10, sk.streak);
+        } else {
+          sk.streak = 0;
+          sk.xp = Math.max(0, (sk.xp || 0) + 2);
+        }
+        sk.loopsCompleted = Math.floor((sk.xp || 0) / 100);
+        this.state.scoreKeeper = sk;
+
+        const pill = document.getElementById("scorekeeper-pill");
+        if (pill) {
+          pill.classList.remove("score-pop");
+          void pill.offsetWidth;
+          pill.classList.add("score-pop");
+        }
       }
 
       updateLeitnerBox(qid, isCorrect) {
