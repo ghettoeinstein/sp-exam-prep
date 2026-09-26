@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CA Real Estate 72-Hour Emergency Cram Engine</title>
+  <title>SP72 — California Real Estate Exam Prep</title>
+  <meta name="theme-color" content="#11100E">
+  <link rel="manifest" href="./manifest.webmanifest">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,13 +155,13 @@
         </div>
         <div>
           <div class="text-sm font-bold tracking-tight text-white flex items-center gap-2">
-            72H REAL ESTATE CRAM
+            SP72
             <span id="header-tier-tag" class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-red-950/80 text-red-400 border border-red-800 hidden">
               Tier 1
             </span>
           </div>
           <div class="text-[11px] text-gray-400 flex items-center gap-2">
-            <span>DRE Salesperson Engine</span>
+            <span>72 hours. One exam. No wasted studying.</span>
             <span class="text-gray-600">•</span>
             <span id="header-countdown" class="text-amber-400 font-mono">72h:00m left</span>
           </div>
@@ -202,7 +204,7 @@
         </div>
 
         <button onclick="app.navTo('dashboard')" id="nav-btn-home" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-200 transition">
-          Dashboard
+          Mission
         </button>
         <button onclick="app.showResetModal()" title="Reset or Export Data" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -224,10 +226,10 @@
           <span>DRE Salesperson Exam</span>
         </div>
         <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          72-Hour Rapid Intake Assessment
+          CALIFORNIA REAL ESTATE IN 72 HOURS.
         </h1>
         <p class="text-sm text-gray-400 mt-2">
-          The California DRE exam has a strict <strong>70% passing threshold</strong> (105 / 150 correct). Let's triage your current memory bank and prescribe a deterministic cram plan.
+          You do not need another course. You need to know what matters, what you do not know, and what to do next. The California salesperson exam is <strong>150 questions, 3 hours, 70% to pass</strong>.
         </p>
 
         <form id="onboarding-form" onsubmit="app.handleOnboardingSubmit(event)" class="mt-6 space-y-5">
@@ -308,7 +310,7 @@
           </div>
 
           <button type="submit" class="w-full py-3.5 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-gray-950 font-bold rounded-xl text-sm shadow-lg shadow-amber-500/20 transition transform active:scale-[0.99] flex items-center justify-center gap-2">
-            <span>Proceed to 15-Question Calibration Diagnostic</span>
+            <span>Build My 72-Hour Plan</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
           </button>
         </form>
@@ -431,239 +433,142 @@
       </div>
     </div>
 
-    <!-- VIEW 4: MAIN DASHBOARD & CRAM COMMAND CENTER -->
+    <!-- VIEW 4: SP72 MISSION CONTROL -->
     <div id="view-dashboard" class="hidden space-y-6">
-      
-      <!-- Top Alert / Prescription Banner -->
-      <div id="dash-prescription-banner" class="bg-gradient-to-r from-gray-900 via-gray-900 to-gray-800 border border-gray-800 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
-        <div class="flex items-center gap-4">
-          <div id="dash-tier-icon" class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shrink-0">
-            ⚠️
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span id="dash-tier-title" class="text-sm font-extrabold text-white">Tier 2: Near the Margin (45-69%)</span>
-              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-gray-800 text-amber-300 border border-gray-700">Recommended Plan</span>
-            </div>
-            <p id="dash-tier-desc" class="text-xs text-gray-400 mt-0.5">
-              Focus 70% of study time on Disclosures & Agency (42% weight) to reliably cross the 70% mark.
-            </p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 w-full md:w-auto">
-          <button onclick="app.startMode('sprint')" class="w-full md:w-auto py-2.5 px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-xs transition shadow-md whitespace-nowrap">
-            Launch Sprint Session
-          </button>
-        </div>
-      </div>
+      <section class="glass-card rounded-[2rem] p-6 sm:p-8 relative overflow-hidden">
+        <div class="absolute inset-x-0 -top-28 h-56 bg-[radial-gradient(circle,rgba(217,164,65,.18),transparent_62%)] pointer-events-none"></div>
+        <div class="relative text-center max-w-3xl mx-auto">
+          <div class="text-[11px] uppercase tracking-[0.28em] text-amber-300 font-bold">SP72 Mission Control</div>
+          <h1 class="mt-4 text-4xl sm:text-6xl font-black tracking-[-0.06em] text-white tabular">
+            <span id="mission-countdown">72H 00M</span>
+          </h1>
+          <div class="mt-2 text-xs uppercase tracking-[0.22em] text-gray-400">until exam</div>
 
-      <!-- Core Stats Grid -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <!-- Card 1: Estimated Readiness -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <div class="text-[11px] text-gray-400 font-medium">Predicted DRE Score</div>
-          <div class="mt-1 flex items-baseline gap-2">
-            <span id="dash-metric-score" class="text-2xl font-black text-white font-mono">0%</span>
-            <span class="text-[11px] text-gray-500">Need 70%</span>
-          </div>
-          <div class="mt-2 w-full bg-gray-950 h-1.5 rounded-full overflow-hidden">
-            <div id="dash-bar-score" class="bg-amber-400 h-full w-0"></div>
-          </div>
-        </div>
-
-        <!-- Card 2: Box 1 (Mistake Graveyard) -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 relative overflow-hidden">
-          <div class="text-[11px] text-rose-400 font-medium flex items-center justify-between">
-            <span>Box 1: Needs Work</span>
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-          </div>
-          <div class="mt-1 flex items-baseline gap-2">
-            <span id="dash-metric-b1" class="text-2xl font-black text-rose-300 font-mono">0</span>
-            <span class="text-[11px] text-gray-500">questions</span>
-          </div>
-          <p class="text-[10px] text-gray-400 mt-2">High-frequency rotation</p>
-        </div>
-
-        <!-- Card 3: Box 2 (Review) -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <div class="text-[11px] text-amber-400 font-medium flex items-center justify-between">
-            <span>Box 2: In Review</span>
-            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-          </div>
-          <div class="mt-1 flex items-baseline gap-2">
-            <span id="dash-metric-b2" class="text-2xl font-black text-amber-300 font-mono">0</span>
-            <span class="text-[11px] text-gray-500">questions</span>
-          </div>
-          <p class="text-[10px] text-gray-400 mt-2">1 correct answer</p>
-        </div>
-
-        <!-- Card 4: Box 3 (Mastered) -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <div class="text-[11px] text-emerald-400 font-medium flex items-center justify-between">
-            <span>Box 3: Mastered</span>
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          </div>
-          <div class="mt-1 flex items-baseline gap-2">
-            <span id="dash-metric-b3" class="text-2xl font-black text-emerald-300 font-mono">0</span>
-            <span class="text-[11px] text-gray-500">questions</span>
-          </div>
-          <p class="text-[10px] text-gray-400 mt-2">2+ consecutive correct</p>
-        </div>
-      </div>
-
-      <!-- Study Modes Grid -->
-      <div class="space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">
-          Targeted 72-Hour Drill Modules
-        </h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          
-          <!-- Mode A: Mistake Graveyard -->
-          <div class="bg-gray-900 border border-gray-800 hover:border-rose-900/60 rounded-xl p-5 flex flex-col justify-between transition group">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="p-2 rounded-lg bg-rose-950 text-rose-400 border border-rose-800">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                </span>
-                <span id="dash-graveyard-count" class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-gray-950 text-rose-400 border border-gray-800">
-                  0 Unresolved
-                </span>
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+            <div class="rounded-2xl bg-white/[.045] border border-white/10 p-4">
+              <div class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Practice Readiness</div>
+              <div class="mt-1 flex items-end gap-2">
+                <span id="dash-metric-score" class="text-4xl font-black text-white tabular">0%</span>
+                <span id="readiness-zone" class="mb-1 text-xs font-bold text-rose-300">CALIBRATE</span>
               </div>
-              <h4 class="text-sm font-bold text-white group-hover:text-rose-300 transition">
-                The Mistake Graveyard
-              </h4>
-              <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-                Drill exclusively through Box 1 missed questions until every single item is answered correctly.
-              </p>
+              <div class="mt-3 w-full bg-gray-950/80 h-2 rounded-full overflow-hidden border border-white/10">
+                <div id="dash-bar-score" class="bg-gradient-to-r from-rose-400 via-amber-300 to-emerald-400 h-full w-0"></div>
+              </div>
+              <p class="mt-2 text-[11px] text-gray-400">Target: 70%+ practice pass • Safety: 80%+</p>
             </div>
-            <button onclick="app.startMode('graveyard')" class="mt-4 w-full py-2 px-3 rounded-lg bg-gray-800 hover:bg-rose-950 hover:text-rose-200 text-gray-300 border border-gray-700 hover:border-rose-800 text-xs font-semibold transition">
-              Clear Box 1 Misses
-            </button>
+
+            <div class="rounded-2xl bg-white/[.045] border border-white/10 p-4">
+              <div class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Critical Queue</div>
+              <div class="mt-1 flex items-end gap-2">
+                <span id="dash-metric-b1" class="text-4xl font-black text-rose-300 tabular">0</span>
+                <span class="mb-1 text-xs text-gray-400">misses</span>
+              </div>
+              <p class="mt-2 text-xs text-gray-400">Formerly Box 1. These get priority until cleared.</p>
+            </div>
+
+            <div class="rounded-2xl bg-white/[.045] border border-white/10 p-4">
+              <div class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Concepts Locked</div>
+              <div class="mt-1 flex items-end gap-2">
+                <span id="dash-metric-b3" class="text-4xl font-black text-emerald-300 tabular">0</span>
+                <span class="mb-1 text-xs text-gray-400">items</span>
+              </div>
+              <p class="mt-2 text-xs text-gray-400"><span id="dash-metric-b2" class="text-amber-300 tabular">0</span> more are in reinforcement.</p>
+            </div>
           </div>
 
-          <!-- Mode B: Quick Category Sprint -->
-          <div class="bg-gray-900 border border-gray-800 hover:border-amber-500/50 rounded-xl p-5 flex flex-col justify-between transition group">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="p-2 rounded-lg bg-amber-950 text-amber-400 border border-amber-800">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                </span>
-                <span class="text-xs font-mono text-gray-400">10 Questions</span>
+          <div class="mt-8 rounded-3xl bg-black/30 border border-white/10 p-5 text-left">
+            <div class="text-[10px] uppercase tracking-[0.22em] text-amber-300 font-bold">Next Mission</div>
+            <div class="mt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 id="dash-tier-title" class="text-2xl font-black tracking-tight text-white">Continue the highest-value sprint</h2>
+                <p id="dash-tier-desc" class="mt-1 text-sm text-gray-300 leading-relaxed">SP72 picks the next action from misses, domain weight, recency and exam urgency.</p>
               </div>
-              <h4 class="text-sm font-bold text-white group-hover:text-amber-300 transition">
-                Category Drill
-              </h4>
-              <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-                Laser-target your weakest DRE subject (Disclosures, Agency, Appraisals, or Contracts).
-              </p>
-            </div>
-            <div class="mt-4 flex gap-2">
-              <select id="dash-category-select" class="flex-1 bg-gray-950 border border-gray-800 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none">
-                <option value="Disclosures">Disclosures (25%)</option>
-                <option value="Agency">Agency & Duties (17%)</option>
-                <option value="Ownership">Ownership & Vesting (15%)</option>
-                <option value="Valuation">Valuation & Math (14%)</option>
-                <option value="Contracts">Contracts (12%)</option>
-                <option value="Financing">Financing (9%)</option>
-                <option value="Transfer">Transfer & Deeds (8%)</option>
-              </select>
-              <button onclick="app.startCategoryDrill()" class="py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-gray-950 text-xs font-bold transition">
-                Go
+              <button onclick="app.startPrescribedSprint()" class="px-6 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-gray-950 font-black text-sm transition shadow-lg shadow-amber-500/20 whitespace-nowrap">
+                DO THE NEXT BEST THING
               </button>
             </div>
           </div>
+        </div>
+      </section>
 
-          <!-- Mode C: Fast Flashcards -->
-          <div class="bg-gray-900 border border-gray-800 hover:border-blue-500/50 rounded-xl p-5 flex flex-col justify-between transition group">
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="glass-card rounded-3xl p-5 lg:col-span-2">
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <h3 class="text-xs font-black uppercase tracking-[0.22em] text-gray-300">Readiness Map</h3>
+            <span class="text-[11px] text-gray-500">Weighted to official CA salesperson blueprint</span>
+          </div>
+          <div id="dashboard-category-bars" class="space-y-3"></div>
+        </div>
+
+        <div class="glass-card rounded-3xl p-5 space-y-4">
+          <h3 class="text-xs font-black uppercase tracking-[0.22em] text-gray-300">Mission Timeline</h3>
+          <div class="space-y-3 text-sm">
+            <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20"><strong class="text-amber-300">Now</strong><p class="text-gray-300">Clear critical misses and highest-weight weakness.</p></div>
+            <div class="p-3 rounded-2xl bg-white/[.04] border border-white/10"><strong class="text-white">Day Two</strong><p class="text-gray-400">Retrieval cycles, ownership/math, 30Q simulation.</p></div>
+            <div class="p-3 rounded-2xl bg-white/[.04] border border-white/10"><strong class="text-white">Final Lock</strong><p class="text-gray-400">Missed Question Vault, recall deck, then stop.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-xs font-black uppercase tracking-[0.22em] text-gray-400">Train / Simulate / Recall</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="p-2 rounded-lg bg-blue-950 text-blue-400 border border-blue-800">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                </span>
-                <span class="text-xs font-mono text-gray-400">Statutory Rules</span>
-              </div>
-              <h4 class="text-sm font-bold text-white group-hover:text-blue-300 transition">
-                Statutes & Flashcards
-              </h4>
-              <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-                Flip through CA Civil Code, landmark cases (<em>Easton v. Strassburger</em>), and key acronyms.
-              </p>
+              <div class="text-rose-300 text-xs font-bold uppercase tracking-wider">Missed Question Vault</div>
+              <h4 class="mt-2 text-lg font-black text-white">Clear critical misses</h4>
+              <p class="mt-2 text-sm text-gray-400">Aka the old “Graveyard.” Graduate items only through retrieval.</p>
+              <span id="dash-graveyard-count" class="inline-block mt-3 text-xs font-bold px-2 py-1 rounded-full bg-rose-950/70 text-rose-300 border border-rose-500/20">0 Unresolved</span>
             </div>
-            <button onclick="app.navTo('flashcards')" class="mt-4 w-full py-2 px-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 text-xs font-semibold transition">
-              Open Card Deck
-            </button>
+            <button onclick="app.startMode('graveyard')" class="mt-5 w-full py-3 rounded-2xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-100 border border-rose-400/20 text-sm font-bold transition">Open Vault</button>
           </div>
 
-          <!-- Mode D: Full 50Q / 150Q Mock Simulation -->
-          <div class="bg-gray-900 border border-gray-800 hover:border-emerald-500/50 rounded-xl p-5 flex flex-col justify-between transition group md:col-span-2 lg:col-span-3">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="p-1.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  </span>
-                  <h4 class="text-sm font-bold text-white">Full Realistic DRE Simulation</h4>
-                  <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700">70% Bar</span>
-                </div>
-                <p class="text-xs text-gray-400">
-                  Strictly weighted to the 7 California state domains. Simulates actual exam endurance and testing psychology.
-                </p>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <button onclick="app.startMockExam(30)" class="py-2 px-4 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 text-xs font-semibold transition whitespace-nowrap">
-                  30Q Sprint Mock (36 min)
-                </button>
-                <button onclick="app.startMockExam(150)" class="py-2 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-gray-950 text-xs font-bold transition shadow whitespace-nowrap">
-                  Full 150Q Official Run (3 hrs)
-                </button>
-              </div>
+          <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="text-amber-300 text-xs font-bold uppercase tracking-wider">Domain Training</div>
+              <h4 class="mt-2 text-lg font-black text-white">Weighted drill</h4>
+              <p class="mt-2 text-sm text-gray-400">Focus by blueprint impact: Disclosures 25%, Agency 17%, etc.</p>
+            </div>
+            <div class="mt-5 flex gap-2">
+              <select id="dash-category-select" class="min-w-0 flex-1 bg-gray-950/80 border border-white/10 rounded-2xl px-3 py-3 text-xs text-white focus:outline-none">
+                <option value="Disclosures">Practice & Disclosures (25%)</option>
+                <option value="Agency">Agency (17%)</option>
+                <option value="Ownership">Ownership (15%)</option>
+                <option value="Valuation">Valuation (14%)</option>
+                <option value="Contracts">Contracts (12%)</option>
+                <option value="Financing">Financing (9%)</option>
+                <option value="Transfer">Transfer (8%)</option>
+              </select>
+              <button onclick="app.startCategoryDrill()" class="px-4 rounded-2xl bg-amber-400 text-gray-950 text-sm font-black">Go</button>
             </div>
           </div>
 
-        </div>
-      </div>
-
-      <!-- 72-Hour Structured Roadmap Recommendation -->
-      <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-300 mb-4 flex items-center justify-between">
-          <span>72-Hour Survival Timeline</span>
-          <span class="text-amber-400 font-mono text-[11px]">Recommended Schedule</span>
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 space-y-2">
-            <div class="font-bold text-amber-400 flex items-center justify-between">
-              <span>Day 1 (Hour 0 - 24)</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300">Foundation</span>
+          <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="text-cyan-300 text-xs font-bold uppercase tracking-wider">Recall Deck</div>
+              <h4 class="mt-2 text-lg font-black text-white">Rules & traps</h4>
+              <p class="mt-2 text-sm text-gray-400">Statutes, distinctions, forms, math hooks and CA-specific traps.</p>
             </div>
-            <p class="text-gray-400">
-              Drill <strong>Disclosures</strong> & <strong>Agency</strong> (42% of the test). Empty Box 1 twice and learn the TDS exemptions.
-            </p>
+            <button onclick="app.navTo('flashcards')" class="mt-5 w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white border border-white/10 text-sm font-bold transition">Open Cards</button>
           </div>
 
-          <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 space-y-2">
-            <div class="font-bold text-blue-400 flex items-center justify-between">
-              <span>Day 2 (Hour 24 - 48)</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-950 text-blue-300">Ownership & Math</span>
+          <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="text-emerald-300 text-xs font-bold uppercase tracking-wider">Simulation</div>
+              <h4 class="mt-2 text-lg font-black text-white">Exam conditions</h4>
+              <p class="mt-2 text-sm text-gray-400">150 questions • 3 hours • 70% to pass. No hints during simulation.</p>
             </div>
-            <p class="text-gray-400">
-              Vesting (Joint Tenancy vs. TIC), Deeds of Trust vs. Mortgages, and Cap Rate math. Run a 30Q Mock.
-            </p>
-          </div>
-
-          <div class="p-4 rounded-xl bg-gray-950 border border-gray-800 space-y-2">
-            <div class="font-bold text-emerald-400 flex items-center justify-between">
-              <span>Day 3 (Hour 48 - 72)</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300">Lock-In</span>
+            <div class="mt-5 grid grid-cols-1 gap-2">
+              <button onclick="app.startMockExam(30)" class="py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white border border-white/10 text-sm font-bold transition">30Q Sprint</button>
+              <button onclick="app.startMockExam(150)" class="py-3 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-gray-950 text-sm font-black transition">150Q Full</button>
             </div>
-            <p class="text-gray-400">
-              Mistake Graveyard cleanup only. Review Flashcards deck. Sleep 8 full hours before the exam center.
-            </p>
           </div>
         </div>
-      </div>
+      </section>
 
+      <p class="text-[11px] text-gray-500 leading-relaxed text-center max-w-3xl mx-auto">
+        SP72 is an independent study tool and is not affiliated with or endorsed by the California Department of Real Estate. Laws and examination content may change. Verify current requirements with the California DRE. Content baseline: California DRE / 2026.
+      </p>
     </div>
 
     <!-- VIEW 5: FLASHCARDS DECK -->
@@ -747,7 +652,7 @@
           <div class="text-xs font-bold text-gray-300 uppercase tracking-wider">Memory Bank Updates:</div>
           <div class="text-xs text-gray-400 flex flex-col gap-1">
             <div id="exam-b3-promotions" class="text-emerald-400 font-mono">+12 items advanced to Box 3 (Mastered)</div>
-            <div id="exam-b1-drops" class="text-rose-400 font-mono">+5 missed items routed to Mistake Graveyard (Box 1)</div>
+            <div id="exam-b1-drops" class="text-rose-400 font-mono">+5 missed items routed to Missed Question Vault</div>
           </div>
         </div>
 
@@ -1556,7 +1461,7 @@
           icon.className = "p-1.5 rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-800 shrink-0 mt-0.5";
           icon.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
         } else {
-          headline.textContent = (selectedIndex === -1) ? "Time Expired! Added to Box 1" : "Incorrect — Added to Mistake Graveyard (Box 1)";
+          headline.textContent = (selectedIndex === -1) ? "Time Expired! Added to Critical Queue" : "Incorrect — Added to Missed Question Vault";
           headline.className = "font-bold text-rose-400 text-sm";
           icon.className = "p-1.5 rounded-lg bg-rose-950 text-rose-400 border border-rose-800 shrink-0 mt-0.5";
           icon.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`;
@@ -1659,7 +1564,7 @@
             </div>
             <div class="text-xs text-amber-200 leading-relaxed">
               <strong>Gap-Closing Protocol Prescribed:</strong> You are hovering right below the 70% passing threshold. 
-              Your immediate focus is to empty the <strong>Mistake Graveyard (Box 1)</strong> and drill 10-question sprint sets on your weakest domain. 5-7 more correct questions will pass you.
+              Your immediate focus is to empty the <strong>Missed Question Vault</strong> and drill 10-question sprint sets on your weakest domain. 5-7 more correct questions may move you into practice-pass range.
             </div>
           `;
         } else {
@@ -1709,6 +1614,13 @@
         });
       }
 
+      getHoursRemaining() {
+        if (!this.state.profile) return 72;
+        const totalMs = (this.state.profile.hoursLeft || 72) * 60 * 60 * 1000;
+        const elapsed = Date.now() - (this.state.startTime || Date.now());
+        return Math.max(0, (totalMs - elapsed) / (1000 * 60 * 60));
+      }
+
       refreshDashboard() {
         const h = this.state.history;
         const total = h.totalAttempted;
@@ -1717,6 +1629,13 @@
 
         document.getElementById("dash-metric-score").textContent = `${overallPct}%`;
         document.getElementById("dash-bar-score").style.width = `${Math.min(100, overallPct)}%`;
+
+        const zone = overallPct < 60 ? "CRITICAL" : overallPct < 70 ? "DEVELOPING" : overallPct < 80 ? "PRACTICE PASS" : overallPct < 90 ? "STRONG" : "LOCKED";
+        const zoneEl = document.getElementById("readiness-zone");
+        if (zoneEl) {
+          zoneEl.textContent = zone;
+          zoneEl.className = `mb-1 text-xs font-bold ${overallPct >= 80 ? "text-emerald-300" : overallPct >= 70 ? "text-amber-300" : "text-rose-300"}`;
+        }
 
         const b1 = this.state.memoryBank.box1.length;
         const b2 = this.state.memoryBank.box2.length;
@@ -1727,44 +1646,76 @@
         document.getElementById("dash-metric-b3").textContent = b3;
         document.getElementById("dash-graveyard-count").textContent = `${b1} Unresolved`;
 
-        // Update Tier Prescription Header
-        const profile = this.state.profile;
-        if (profile && profile.assignedTier) {
-          document.getElementById("dash-tier-title").textContent = profile.assignedTier;
-          const icon = document.getElementById("dash-tier-icon");
-          const desc = document.getElementById("dash-tier-desc");
+        const countdownEl = document.getElementById("mission-countdown");
+        if (countdownEl) {
+          const hours = this.getHoursRemaining();
+          const hLeft = Math.floor(hours);
+          const mLeft = Math.floor((hours - hLeft) * 60);
+          countdownEl.textContent = `${hLeft}H ${String(mLeft).padStart(2, "0")}M`;
+        }
 
-          if (profile.assignedTier.includes("Tier 1")) {
-            icon.className = "w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shrink-0 bg-rose-950 text-rose-400 border border-rose-800";
-            icon.textContent = "🚨";
-            desc.textContent = "Triage Protocol: Skip edge cases. Drill Disclosures & Agency until Box 1 drops to zero.";
-          } else if (profile.assignedTier.includes("Tier 2")) {
-            icon.className = "w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shrink-0 bg-amber-950 text-amber-400 border border-amber-800";
-            icon.textContent = "⚡";
-            desc.textContent = "Gap-Closing: Focus on weak domains & run 10Q Sprints to cross the 70% threshold.";
-          } else {
-            icon.className = "w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl shrink-0 bg-emerald-950 text-emerald-400 border border-emerald-800";
-            icon.textContent = "🎯";
-            desc.textContent = "Polish & Retention: Maintain passing momentum with timed mock exams and flashcard review.";
-          }
+        const domainWeights = {
+          Disclosures: [25, "Practice / Disclosures"],
+          Agency: [17, "Agency"],
+          Ownership: [15, "Ownership / Land Use"],
+          Valuation: [14, "Valuation / Financial"],
+          Contracts: [12, "Contracts"],
+          Financing: [9, "Financing"],
+          Transfer: [8, "Transfer"]
+        };
+        const barsContainer = document.getElementById("dashboard-category-bars");
+        if (barsContainer) {
+          barsContainer.innerHTML = "";
+          Object.entries(domainWeights).forEach(([catKey, [weight, label]]) => {
+            const stats = this.state.history.categories[catKey] || { attempted: 0, correct: 0 };
+            const catPct = stats.attempted > 0 ? Math.round((stats.correct / stats.attempted) * 100) : 0;
+            const row = document.createElement("div");
+            const color = catPct >= 80 ? "bg-emerald-300" : catPct >= 70 ? "bg-amber-300" : catPct > 0 ? "bg-rose-400" : "bg-gray-700";
+            row.innerHTML = `
+              <div class="flex items-center justify-between gap-3 text-sm">
+                <span class="text-gray-200">${label}</span>
+                <span class="tabular text-gray-400 text-xs">${catPct || "—"}${catPct ? "%" : ""} · ${weight}% weight</span>
+              </div>
+              <div class="mt-1 w-full h-2 rounded-full bg-gray-950/80 border border-white/10 overflow-hidden">
+                <div class="${color} h-full rounded-full" style="width:${catPct}%"></div>
+              </div>`;
+            barsContainer.appendChild(row);
+          });
+        }
+
+        const title = document.getElementById("dash-tier-title");
+        const desc = document.getElementById("dash-tier-desc");
+        if (b1 > 0) {
+          title.textContent = "Clear the Missed Question Vault";
+          desc.textContent = `${b1} critical item${b1 === 1 ? "" : "s"} are costing the most readiness. Retrieve them before adding new material.`;
+        } else if (overallPct < 70) {
+          title.textContent = "Run a weighted weakness sprint";
+          desc.textContent = "Highest-impact domains come first: Practice/Disclosures, Agency, Ownership, then Valuation.";
+        } else {
+          title.textContent = "Verify under exam conditions";
+          desc.textContent = "You are in practice-pass range. Use timed simulations and final recall to lock it in.";
         }
       }
 
       startPrescribedSprint() {
-        this.startMode("sprint");
+        if (this.state.memoryBank.box1.length > 0) {
+          this.startMode("graveyard");
+        } else {
+          this.startMode("sprint");
+        }
       }
 
       startMode(modeName) {
         if (modeName === "graveyard") {
           const b1Ids = this.state.memoryBank.box1;
           if (b1Ids.length === 0) {
-            alert("Great work! Your Mistake Graveyard (Box 1) is currently empty. Drill other categories to test your memory.");
+            alert("Great work! Your Missed Question Vault is currently empty. Run a weighted domain sprint to test your memory.");
             return;
           }
           const questions = QUESTION_BANK.filter(q => b1Ids.includes(q.id));
           this.activeQuiz = {
             mode: "graveyard",
-            title: "Mistake Graveyard (Box 1 Remediation)",
+            title: "Missed Question Vault Remediation",
             questions: questions.length > 0 ? questions : QUESTION_BANK.slice(0, 5),
             results: []
           };
@@ -1834,7 +1785,7 @@
         }
 
         document.getElementById("exam-b3-promotions").textContent = `Questions now in Mastered Box 3: ${this.state.memoryBank.box3.length}`;
-        document.getElementById("exam-b1-drops").textContent = `Unresolved items in Mistake Graveyard: ${this.state.memoryBank.box1.length}`;
+        document.getElementById("exam-b1-drops").textContent = `Unresolved items in Missed Question Vault: ${this.state.memoryBank.box1.length}`;
       }
 
       renderFlashcard() {
@@ -1924,6 +1875,12 @@
     window.addEventListener("DOMContentLoaded", () => {
       app = new CramEngine();
       app.init();
+
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("./sw.js").catch(() => {
+          // GitHub Pages-safe progressive enhancement; studying still works if SW is unavailable.
+        });
+      }
     });
   </script>
 </body>
